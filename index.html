@@ -207,23 +207,7 @@
         
           <div class="truncate-text">
             
-              
-
-1，bestkasscn的超级简单密码
-2，bestkasscn的简单密码
-3，Neighbors（复现）
-
-
-这次Round是密码专项赛，共5道题，做出了2道；剩的3道是鸡块师傅出的（鸡块师傅tql）
-
-1，bestkasscn的超级简单密码
-出题人：bestkasscn
-题目：
-
-
-baby_RSA.py (点击展开)
-
-from Crypto.Util.number import *import gmpy2from functools import reducefrom secret import flagp = getPrime(1024)i = 0while True:    r = p * 5 + i    if isPrime(r):        i = 0        break    else:        i += 1while True:    q = p * 10 + i    if isPrime(q):        break    else:        i += 1n = p * q * re = 65...
+              记录一下
             
           </div>
         
@@ -642,5 +626,21 @@ from Crypto.Util.number import *import gmpy2from functools import reducefrom sec
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>

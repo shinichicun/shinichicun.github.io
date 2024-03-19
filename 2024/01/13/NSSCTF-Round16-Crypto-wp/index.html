@@ -214,33 +214,36 @@
 <li><a href="#2break">2，break</a></li>
 </ul>
 <!-- tocstop -->
-<h2><span id="1pr">1，pr</span></h2><p>这题的话，因为题目描述有说<strong>CRT</strong>，还给了p和r，那就可以考虑下面这个方程组的CRT：</p>
-<p>$\begin{cases}c_p=c1\ mod\ p=m^{e}\ mod\ p\\c_r=c2\ mod\ r=m^{e}\ mod\ r\end{cases}$</p>
-<p>这样求出来的就是：$c=m^e\ mod\ p*r$</p>
+<h2><span id="1pr">1，pr</span></h2>
+<p>这题的话，因为题目描述有说<strong>CRT</strong>，还给了p和r，那就可以考虑下面这个方程组的CRT：</p>
+<p><span class="math inline">\(\begin{cases}c_p=c1\ mod\ p=m^{e}\ mod\
+p\\c_r=c2\ mod\ r=m^{e}\ mod\ r\end{cases}\)</span></p>
+<p>这样求出来的就是：<span class="math inline">\(c=m^e\ mod\
+p*r\)</span></p>
 <p>然后就是正常解个RSA就行。</p>
 <details>
-    <summary>点击展开代码</summary>
-
+<summary>
+点击展开代码
+</summary>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c1 = <span class="number">36918910341116680090654563538246204134840776220077189276689868322808977412566781872132517635399441578464309667998925236488280867210758507758915311644529399878185776345227817559234605958783077866016808605942558810445187434690812992072238407431218047312484354859724174751718700409405142819140636116559320641695</span></span><br><span class="line">c2 = <span class="number">15601788304485903964195122196382181273808496834343051747331984997977255326224514191280515875796224074672957848566506948553165091090701291545031857563686815297483181025074113978465751897596411324331847008870832527695258040104858667684793196948970048750296571273364559767074262996595282324974180754813257013752</span></span><br><span class="line">p = <span class="number">12101696894052331138951718202838643670037274599483776996203693662637821825873973767235442427190607145999472731101517998719984942030184683388441121181962123</span></span><br><span class="line">r = <span class="number">10199001137987151966640837133782537428248507382360655526592866939552984259171772190788036403425837649697437126360866173688083643144865107648483668545682383</span></span><br><span class="line">cp = c1 % p</span><br><span class="line">cr = c2 % r</span><br><span class="line">pr = invert(p, r)</span><br><span class="line">rp = invert(r, p)</span><br><span class="line">e = <span class="number">31413537523</span></span><br><span class="line">cpr = <span class="built_in">int</span>((cp*r*rp + cr*p*pr) % (p*r))</span><br><span class="line">d = invert(e, (p-<span class="number">1</span>)*(r-<span class="number">1</span>))</span><br><span class="line">m = <span class="built_in">pow</span>(cpr, d, p*r)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 </details>
-
 <hr>
-<h2><span id="2break">2，break</span></h2><p>其实这题，主要考了 “手撕证书”——懂pem证书的结构，可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/461349946">文章1</a>或<a target="_blank" rel="noopener" href="https://tover.xyz/p/pem-by-hand/#%E6%89%8B%E6%92%95RSA%E7%A7%81%E9%92%A5">文章2</a>，当然我接下来也会讲的。</p>
-<p>首先，对于本题而言，因为看到证书有<strong>——-END PRIVATE KEY——-</strong>，说明给的是证书的后半部分；但具体有多少内容，得”手撕“才知道。</p>
+<h2><span id="2break">2，break</span></h2>
+<p>其实这题，主要考了 “手撕证书”——懂pem证书的结构，可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/461349946">文章1</a>或<a target="_blank" rel="noopener" href="https://tover.xyz/p/pem-by-hand/#%E6%89%8B%E6%92%95RSA%E7%A7%81%E9%92%A5">文章2</a>，当然我接下来也会讲的。</p>
+<p>首先，对于本题而言，因为看到证书有<strong>-----END PRIVATE
+KEY-----</strong>，说明给的是证书的后半部分；但具体有多少内容，得”手撕“才知道。</p>
 <p>所以得先转换PEM为DER：</p>
 <details>
-    <summary>点击展开代码</summary>
-
+<summary>
+点击展开代码
+</summary>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64decode</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line">s = <span class="string">&#x27;&#x27;&#x27;Bc8tSTrvGJm2oYuCzIz+Yg4nwwKBgQDiYUawe5Y+rPbFhVOMVB8ZByfMa4LjeSDd</span></span><br><span class="line"><span class="string">Z23jEGvylBHSeyvFCQq3ISUE40k1D2XmmeaZML3a1nUn6ORIWGaG2phcwrWLkR6n</span></span><br><span class="line"><span class="string">ubVmb1QJSzgzmFHGnL56KHByZxD9q6DPB+o6gGWt8/6ddBl2NIZU/1btdPQgojfA</span></span><br><span class="line"><span class="string">XXJFzR92RQKBgQC7qlB0U7m2U4FdG9eelSd+WSKNUVllZAuHji7jgh7Ox6La9xN5</span></span><br><span class="line"><span class="string">miGZ1yvP44yX218OJ9Zi08o6vIrM6Eil45KzTtGm4iuIn8CMpox+5eUtoxyvxa9r</span></span><br><span class="line"><span class="string">s2Wu+IRZN9zCME+p+qI8/TG27dIyDzsdgNqcUo8ESls7uW5/FEA7bYTCiQKBgQC7</span></span><br><span class="line"><span class="string">1KybeB+kZ0zlfIdi8tVOpeI+uaHDbdh3+/5wHUsD3hmfg7VAag0q/2RA1vkB/oG1</span></span><br><span class="line"><span class="string">QVLVHl0Yu0I/1/u5jyeakrtClAegAsvlrK+3i321rGS4YpTPb3SX1P/f3GZ7o7Ds</span></span><br><span class="line"><span class="string">touA+NHk8IL9T7xkmJYw5h/RLG32ucH6aU6MXfLR5QKBgD/skfdFxGWxhHk6U1mS</span></span><br><span class="line"><span class="string">27IM9jJNg9xLz5nxzkqPPhLn+rdgIIuTuQtv++eEjEP++7ZV10rg5yKVJd/bxy8H</span></span><br><span class="line"><span class="string">2IN7aQo7kZWulHTQDZMFwgOhn0u6glJi+qC8bWzYDFOQSFrY9XQ3vwKMspqm+697</span></span><br><span class="line"><span class="string">xM+dMUW0LML6oUE9ZjEiAY/5&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">s = b64decode(s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(binascii.hexlify(s))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">05cf2d493aef1899b6a18b82cc8cfe620e27c302818100e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f764502818100bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c28902818100bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e50281803fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
-
 </details>
-
-<p>那我们怎么“手撕”呢？可以根据一些常见的参数以及密文去 “手撕”，下表里有一些常见的证书参数：</p>
-<div class="table-container">
+<p>那我们怎么“手撕”呢？可以根据一些常见的参数以及密文去
+“手撕”，下表里有一些常见的证书参数：</p>
 <table>
 <thead>
-<tr>
+<tr class="header">
 <th><strong>数据</strong></th>
 <th><strong>长度</strong></th>
 <th><strong>名称</strong></th>
@@ -248,86 +251,86 @@
 </tr>
 </thead>
 <tbody>
-<tr>
+<tr class="odd">
 <td>30</td>
 <td>1</td>
 <td>标记符</td>
 <td>代表ASN.1结构的开始</td>
 </tr>
-<tr>
+<tr class="even">
 <td>82</td>
 <td>1</td>
 <td>长度类型</td>
 <td>代表后面跟着一个双字节长度</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>025b</td>
 <td>2</td>
 <td>长度</td>
 <td>代表后续内容的总长度为603字节</td>
 </tr>
-<tr>
+<tr class="even">
 <td>02</td>
 <td>1</td>
 <td>类型</td>
 <td>代表整型</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>01</td>
 <td>1</td>
 <td>长度</td>
 <td>代表1字节</td>
 </tr>
-<tr>
+<tr class="even">
 <td>00</td>
 <td>1</td>
 <td>值</td>
 <td>代表整数0</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>02</td>
 <td>1</td>
 <td>类型</td>
 <td>代表整型</td>
 </tr>
-<tr>
+<tr class="even">
 <td>81</td>
 <td>1</td>
 <td>长度类型</td>
 <td>代表后面跟着一个单字节长度</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>80</td>
 <td>1</td>
 <td>长度</td>
 <td>代表数据长度为128字节</td>
 </tr>
-<tr>
+<tr class="even">
 <td>…</td>
 <td>128</td>
 <td>值</td>
 <td>数据值1</td>
 </tr>
-<tr>
+<tr class="odd">
 <td>…</td>
+<td></td>
 <td></td>
 <td></td>
 </tr>
 </tbody>
 </table>
-</div>
 <p>当然，我们这里只会用到02、81、80这几个参数哈。</p>
 <p>因为密文有点长，所以我就猜了个<strong>0281</strong>开头的是一个数的数据，于是可以拆出这样的形式（因为数据太长了，就只列了个格式）：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span><br><span class="line">028181 数字<span class="number">1</span></span><br><span class="line">028181 数字<span class="number">2</span></span><br><span class="line">028181 数字<span class="number">3</span></span><br><span class="line">028180 数字<span class="number">4</span></span><br></pre></td></tr></table></figure>
 <p>接着，我参考的是<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/461349946">文章1</a>，所以可以得到：</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span><br><span class="line">q 028181 数字<span class="number">1</span></span><br><span class="line">dp 028181 数字<span class="number">2</span></span><br><span class="line">dq 028181 数字<span class="number">3</span></span><br><span class="line">q^&#123;-<span class="number">1</span>&#125; mod p 028180 数字<span class="number">4</span></span><br></pre></td></tr></table></figure>
-<p>然后，因为有q和dq，所以我是直接猜了个最简单的情况：<strong>m&lt;q</strong>，那么便有：$c^{dq}\ mod\ q=m$；最后还真这样（</p>
+<p>然后，因为有q和dq，所以我是直接猜了个最简单的情况：<strong>m&lt;q</strong>，那么便有：<span class="math inline">\(c^{dq}\ mod\ q=m\)</span>；最后还真这样（</p>
 <p>脚本如下：</p>
 <details>
-    <summary>点击展开代码</summary>
-
+<summary>
+点击展开代码
+</summary>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 证书格式转换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">from base64 import b64decode</span></span><br><span class="line"><span class="string">import binascii</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">s = &#x27;&#x27;&#x27;Bc8tSTrvGJm2oYuCzIz+Yg4nwwKBgQDiYUawe5Y+rPbFhVOMVB8ZByfMa4LjeSDd</span></span><br><span class="line"><span class="string">Z23jEGvylBHSeyvFCQq3ISUE40k1D2XmmeaZML3a1nUn6ORIWGaG2phcwrWLkR6n</span></span><br><span class="line"><span class="string">ubVmb1QJSzgzmFHGnL56KHByZxD9q6DPB+o6gGWt8/6ddBl2NIZU/1btdPQgojfA</span></span><br><span class="line"><span class="string">XXJFzR92RQKBgQC7qlB0U7m2U4FdG9eelSd+WSKNUVllZAuHji7jgh7Ox6La9xN5</span></span><br><span class="line"><span class="string">miGZ1yvP44yX218OJ9Zi08o6vIrM6Eil45KzTtGm4iuIn8CMpox+5eUtoxyvxa9r</span></span><br><span class="line"><span class="string">s2Wu+IRZN9zCME+p+qI8/TG27dIyDzsdgNqcUo8ESls7uW5/FEA7bYTCiQKBgQC7</span></span><br><span class="line"><span class="string">1KybeB+kZ0zlfIdi8tVOpeI+uaHDbdh3+/5wHUsD3hmfg7VAag0q/2RA1vkB/oG1</span></span><br><span class="line"><span class="string">QVLVHl0Yu0I/1/u5jyeakrtClAegAsvlrK+3i321rGS4YpTPb3SX1P/f3GZ7o7Ds</span></span><br><span class="line"><span class="string">touA+NHk8IL9T7xkmJYw5h/RLG32ucH6aU6MXfLR5QKBgD/skfdFxGWxhHk6U1mS</span></span><br><span class="line"><span class="string">27IM9jJNg9xLz5nxzkqPPhLn+rdgIIuTuQtv++eEjEP++7ZV10rg5yKVJd/bxy8H</span></span><br><span class="line"><span class="string">2IN7aQo7kZWulHTQDZMFwgOhn0u6glJi+qC8bWzYDFOQSFrY9XQ3vwKMspqm+697</span></span><br><span class="line"><span class="string">xM+dMUW0LML6oUE9ZjEiAY/5&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">s = b64decode(s)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(binascii.hexlify(s))</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 证书拆解</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span></span><br><span class="line"><span class="string">q 028181 00e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f7645</span></span><br><span class="line"><span class="string">dp 028181 00bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c289</span></span><br><span class="line"><span class="string">dq 028181 00bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e5</span></span><br><span class="line"><span class="string">qp 028180 3fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># 解个最简单的情况（</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">q = <span class="number">0x00e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f7645</span></span><br><span class="line">dp = <span class="number">0x00bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c289</span></span><br><span class="line">dq = <span class="number">0x00bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e5</span></span><br><span class="line">qp = <span class="number">0x3fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line">c = <span class="number">6081370370545409218106271903400346695565292992689150366474451604281551878507114813906275593034729563149286993189430514737137534129570304832172520820901940874698337733991868650159489601159238582002010625666203730677577976307606665760650563172302688129824842780090723167480409842707790983962415315804311334507726664838464859751689906850572044873633896253285381878416855505301919877714965930289139921111644393144686543207867970807469735534838601255712764863973853116693691206791007433101433703535127367245739289103650669095061417223994665200039533840922696282929063608853551346533188464573323230476645532002621795338655</span></span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">pow</span>(c, dq, q)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
 </details>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
         
@@ -431,5 +434,21 @@
 
   </div>
   <script src="/js/light-dark-switch.js"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
 </body>
 </html>
