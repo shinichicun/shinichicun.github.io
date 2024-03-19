@@ -168,6 +168,92 @@
    
 
 
+<article id="post-NSSCTF-Round19-Crypto-wp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 itemprop="name">
+        <a class="p-name article-title" href="/2024/03/19/NSSCTF-Round19-Crypto-wp/">NSSCTF-Round19-Crypto-wp</a>
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-03-19T08:38:33.000Z" itemprop="datePublished">2024-03-19</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            20k words 
+          </div>
+        </div>
+        
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <div class="truncate-text">
+            
+              
+
+1，bestkasscn的超级简单密码
+2，bestkasscn的简单密码
+3，Neighbors（复现）
+
+
+这次Round是密码专项赛，共5道题，做出了2道；剩的3道是鸡块师傅出的（鸡块师傅tql）
+
+1，bestkasscn的超级简单密码
+出题人：bestkasscn
+题目：
+
+
+baby_RSA.py (点击展开)
+
+from Crypto.Util.number import *import gmpy2from functools import reducefrom secret import flagp = getPrime(1024)i = 0while True:    r = p * 5 + i    if isPrime(r):        i = 0        break    else:        i += 1while True:    q = p * 10 + i    if isPrime(q):        break    else:        i += 1n = p * q * re = 65...
+            
+          </div>
+        
+      </div>
+
+         
+    </div>
+    
+     
+    <a class="right-panel  non-pic  "
+      
+      href="/2024/03/19/NSSCTF-Round19-Crypto-wp/" 
+    >
+       
+      <i class="fa-solid fa-angle-right non-pic"></i>
+       
+    </a>
+     
+  </div>
+  
+</article>
+
+
+
+
+
+
+   
+
+
 <article id="post-VCTF-Crypto-wp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
    
   <div class="article-inner">
