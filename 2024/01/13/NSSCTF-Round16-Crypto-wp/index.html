@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+
+
+<html theme="dark" showBanner="true" hasBanner="true" > 
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/fontawesome.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/brands.min.css" rel="stylesheet">
+<link href="https://cdn.staticfile.org/font-awesome/6.4.2/css/solid.min.css" rel="stylesheet">
+<script src="/js/color.global.min.js" ></script>
+<script src="/js/load-settings.js" ></script>
+<head>
+  <meta charset="utf-8">
+  
+  
+  
+
+  
+  <title>NSSCTF-Round16-Crypto-wp | Shin&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="preload" href="/css/fonts/Roboto-Regular.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+  <link rel="preload" href="/css/fonts/Roboto-Bold.ttf" as="font" type="font/ttf" crossorigin="anonymous">
+
+  <meta name="description" content="记录一下当时的做题记录">
+<meta property="og:type" content="article">
+<meta property="og:title" content="NSSCTF-Round16-Crypto-wp">
+<meta property="og:url" content="http://shinichicun.top/2024/01/13/NSSCTF-Round16-Crypto-wp/index.html">
+<meta property="og:site_name" content="Shin&#39;s Blog">
+<meta property="og:description" content="记录一下当时的做题记录">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2024-01-13T10:37:47.000Z">
+<meta property="article:modified_time" content="2024-05-22T15:45:08.196Z">
+<meta property="article:author" content="Shin">
+<meta property="article:tag" content="Crypto">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Shin's Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: light)" href="/images/favicon-light-192.png" sizes="192x192">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-32.png" sizes="32x32">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-128.png" sizes="128x128">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-180.png" sizes="180x180">
+    <link rel="icon" media="(prefers-color-scheme: dark)" href="/images/favicon-dark-192.png" sizes="192x192">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  <link rel="stylesheet" href="/css/prism.css">
+<meta name="generator" content="Hexo 7.0.0"><link rel="stylesheet" href="/css/prism.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+<body>
+  
+  
+    
+<div id="banner" class="">
+  <img src="https://ooo.0x0.ooo/2023/12/20/OKz3Mc.jpg" itemprop="image">
+  <div id="banner-dim"></div>
+</div>
+ 
+   
+  <div id="main-grid" class="  ">
+    <div id="nav" class=""  >
+      <navbar id="navbar">
+  <nav id="title-nav">
+    <a href="/">
+      <div id="vivia-logo">
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div>Shin's Blog </div>
+    </a>
+  </nav>
+  <nav id="main-nav">
+    
+      <a class="main-nav-link" href="/">Home</a>
+    
+      <a class="main-nav-link" href="/archives">Archives</a>
+    
+      <a class="main-nav-link" href="/about">About</a>
+    
+      <a class="main-nav-link" href="/links/">Friends</a>
+    
+  </nav>
+  <nav id="sub-nav">
+    <a id="theme-btn" class="nav-icon">
+      <span class="light-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M438.5-829.913v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-829.913Zm0 747.826v-48q0-17.452 11.963-29.476 11.964-12.024 29.326-12.024 17.363 0 29.537 12.024t12.174 29.476v48q0 17.452-11.963 29.476-11.964 12.024-29.326 12.024-17.363 0-29.537-12.024T438.5-82.087ZM877.913-438.5h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537t29.476-12.174h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T877.913-438.5Zm-747.826 0h-48q-17.452 0-29.476-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T82.087-521.5h48q17.452 0 29.476 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T130.087-438.5Zm660.174-290.87-34.239 32q-12.913 12.674-29.565 12.174-16.653-.5-29.327-13.174-12.674-12.673-12.554-28.826.12-16.152 12.794-28.826l33-35q12.913-12.674 30.454-12.674t30.163 12.847q12.709 12.846 12.328 30.826-.38 17.98-13.054 30.653ZM262.63-203.978l-32 34q-12.913 12.674-30.454 12.674t-30.163-12.847q-12.709-12.846-12.328-30.826.38-17.98 13.054-30.653l33.239-31q12.913-12.674 29.565-12.174 16.653.5 29.327 13.174 12.674 12.673 12.554 28.826-.12 16.152-12.794 28.826Zm466.74 33.239-32-33.239q-12.674-12.913-12.174-29.565.5-16.653 13.174-29.327 12.673-12.674 28.826-13.054 16.152-.38 28.826 12.294l35 33q12.674 12.913 12.674 30.454t-12.847 30.163q-12.846 12.709-30.826 12.328-17.98-.38-30.653-13.054ZM203.978-697.37l-34-33q-12.674-12.913-13.174-29.945-.5-17.033 12.174-29.707t31.326-13.293q18.653-.62 31.326 13.054l32 34.239q11.674 12.913 11.174 29.565-.5 16.653-13.174 29.327-12.673 12.674-28.826 12.554-16.152-.12-28.826-12.794ZM480-240q-100 0-170-70t-70-170q0-100 70-170t170-70q100 0 170 70t70 170q0 100-70 170t-170 70Zm-.247-82q65.703 0 111.475-46.272Q637-414.544 637-480.247t-45.525-111.228Q545.95-637 480.247-637t-111.475 45.525Q323-545.95 323-480.247t45.525 111.975Q414.05-322 479.753-322ZM481-481Z"/></svg></span>
+      <span class="dark-mode-icon"><svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M480.239-116.413q-152.63 0-258.228-105.478Q116.413-327.37 116.413-480q0-130.935 77.739-227.435t206.304-125.043q43.022-9.631 63.87 10.869t3.478 62.805q-8.891 22.043-14.315 44.463-5.424 22.42-5.424 46.689 0 91.694 64.326 155.879 64.325 64.186 156.218 64.186 24.369 0 46.978-4.946 22.609-4.945 44.413-14.076 42.826-17.369 62.967 1.142 20.142 18.511 10.511 61.054Q807.174-280 712.63-198.206q-94.543 81.793-232.391 81.793Zm0-95q79.783 0 143.337-40.217 63.554-40.218 95.793-108.283-15.608 4.044-31.097 5.326-15.49 1.283-31.859.805-123.706-4.066-210.777-90.539-87.071-86.473-91.614-212.092-.24-16.369.923-31.978 1.164-15.609 5.446-30.978-67.826 32.478-108.282 96.152Q211.652-559.543 211.652-480q0 111.929 78.329 190.258 78.329 78.329 190.258 78.329ZM466.13-465.891Z"/></svg></span>
+    </a>
+    
+      <a id="nav-rss-link" class="nav-icon mobile-hide" href="/atom.xml" title="RSS Feed">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M198-120q-25.846 0-44.23-18.384-18.384-18.385-18.384-44.23 0-25.846 18.384-44.23 18.384-18.385 44.23-18.385 25.846 0 44.23 18.385 18.384 18.384 18.384 44.23 0 25.845-18.384 44.23Q223.846-120 198-120Zm538.385 0q-18.846 0-32.923-13.769-14.076-13.769-15.922-33.23-8.692-100.616-51.077-188.654-42.385-88.039-109.885-155.539-67.5-67.501-155.539-109.885Q283-663.462 182.385-672.154q-19.461-1.846-33.23-16.23-13.769-14.385-13.769-33.846t14.076-32.922q14.077-13.461 32.923-12.23 120.076 8.692 226.038 58.768 105.961 50.077 185.73 129.846 79.769 79.769 129.846 185.731 50.077 105.961 58.769 226.038 1.231 18.846-12.538 32.922Q756.461-120 736.385-120Zm-252 0q-18.231 0-32.423-13.461t-18.653-33.538Q418.155-264.23 348.886-333.5q-69.27-69.27-166.501-84.423-20.077-4.462-33.538-18.961-13.461-14.5-13.461-33.346 0-19.076 13.884-33.23 13.884-14.153 33.115-10.922 136.769 15.384 234.384 112.999 97.615 97.615 112.999 234.384 3.231 19.23-10.538 33.115Q505.461-120 484.385-120Z"/></svg>
+      </a>
+    
+    <div id="nav-menu-btn" class="nav-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20"><path d="M177.37-252.282q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Zm0-186.218q-17.453 0-29.477-11.963-12.024-11.964-12.024-29.326 0-17.363 12.024-29.537T177.37-521.5h605.26q17.453 0 29.477 11.963 12.024 11.964 12.024 29.326 0 17.363-12.024 29.537T782.63-438.5H177.37Zm0-186.217q-17.453 0-29.477-11.964-12.024-11.963-12.024-29.326t12.024-29.537q12.024-12.174 29.477-12.174h605.26q17.453 0 29.477 11.964 12.024 11.963 12.024 29.326t-12.024 29.537q-12.024 12.174-29.477 12.174H177.37Z"/></svg>
+    </div>
+  </nav>
+</navbar>
+<div id="nav-dropdown" class="hidden">
+  <div id="dropdown-link-list">
+    
+      <a class="nav-dropdown-link" href="/">Home</a>
+    
+      <a class="nav-dropdown-link" href="/archives">Archives</a>
+    
+      <a class="nav-dropdown-link" href="/about">About</a>
+    
+      <a class="nav-dropdown-link" href="/links/">Friends</a>
+    
+    
+      <a class="nav-dropdown-link" href="/atom.xml" title="RSS Feed">RSS</a>
+     
+    </div>
+</div>
+<script>
+  let dropdownBtn = document.getElementById("nav-menu-btn");
+  let dropdownEle = document.getElementById("nav-dropdown");
+  dropdownBtn.onclick = function() {
+    dropdownEle.classList.toggle("hidden");
+  }
+</script>
+    </div>
+    <div id="sidebar-wrapper">
+      <sidebar id="sidebar">
+  
+    <div class="widget-wrap">
+  <div class="info-card">
+    <div class="avatar">
+      
+        <image src=https://ooo.0x0.ooo/2023/12/20/OKzC7r.jpg></image>
+      
+      <div class="img-dim"></div>
+    </div>
+    <div class="info">
+      <div class="username">Shin </div>
+      <div class="dot"></div>
+      <div class="subtitle">只会密码的菜鸡一枚 ( </div>
+      <div class="link-list">
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://qm.qq.com/q/pVfqR9JxZI" title="QQ"><i class="fa-brands fa-qq"></i></a>
+        
+          <a class="link-btn" target="_blank" rel="noopener" href="https://space.bilibili.com/69211552?spm_id_from=333.1007.0.0" title="Bilibili"><i class="fa-brands fa-bilibili"></i></a>
+         
+      </div>  
+    </div>
+  </div>
+</div>
+
+  
+  <div class="sticky">
+    
+      
+
+
+
+    
+      
+  <div class="widget-wrap">
+    <div class="widget">
+      <h3 class="widget-title">Tags</h3>
+      <ul class="widget-tag-list" itemprop="keywords"><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/Crypto/" rel="tag">Crypto</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/sagemath/" rel="tag">sagemath</a></li><li class="widget-tag-list-item"><a class="widget-tag-list-link" href="/tags/%E6%9D%82%E8%AE%B0/" rel="tag">杂记</a></li></ul>
+    </div>
+  </div>
+
+
+    
+  </div>
+</sidebar>
+    </div>
+    <div id="content-body">
+       
+
+
+<article id="post-NSSCTF-Round16-Crypto-wp" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  
+    
+   
+  <div class="article-inner">
+    <div class="article-main">
+      <header class="article-header">
+        
+<div class="main-title-bar">
+  <div class="main-title-dot"></div>
+  
+    
+      <h1 class="p-name article-title" itemprop="headline name">
+        NSSCTF-Round16-Crypto-wp
+      </h1>
+    
+  
+</div>
+
+        <div class='meta-info-bar'>
+          <div class="meta-info">
+  <time class="dt-published" datetime="2024-01-13T10:37:47.000Z" itemprop="datePublished">2024-01-13</time>
+</div>
+          <div class="need-seperator meta-info">
+            <div class="meta-cate-flex">
+  
+    Uncategorized 
+   
+</div>
+  
+          </div>
+          <div class="wordcount need-seperator meta-info">
+            7.7k words 
+          </div>
+        </div>
+        
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Crypto/" rel="tag">Crypto</a></li></ul>
+
+      </header>
+      <div class="e-content article-entry" itemprop="articleBody">
+        
+          <!-- toc -->
+<ul>
+<li><a href="#1pr">1，pr</a></li>
+<li><a href="#2break">2，break</a></li>
+</ul>
+<!-- tocstop -->
+<h2><span id="1pr">1，pr</span></h2>
+<p>这题的话，因为题目描述有说<strong>CRT</strong>，还给了p和r，那就可以考虑下面这个方程组的CRT：</p>
+<p><svg style="vertical-align: -2.148ex;" xmlns="http://www.w3.org/2000/svg" width="27.793ex" height="5.428ex" role="img" focusable="false" viewbox="0 -1449.5 12284.3 2399" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="MJX-1-TEX-S3-7B" d="M618 -943L612 -949H582L568 -943Q472 -903 411 -841T332 -703Q327 -682 327 -653T325 -350Q324 -28 323 -18Q317 24 301 61T264 124T221 171T179 205T147 225T132 234Q130 238 130 250Q130 255 130 258T131 264T132 267T134 269T139 272T144 275Q207 308 256 367Q310 436 323 519Q324 529 325 851Q326 1124 326 1154T332 1205Q369 1358 566 1443L582 1450H612L618 1444V1429Q618 1413 616 1411L608 1406Q599 1402 585 1393T552 1372T515 1343T479 1305T449 1257T429 1200Q425 1180 425 1152T423 851Q422 579 422 549T416 498Q407 459 388 424T346 364T297 318T250 284T214 264T197 254L188 251L205 242Q290 200 345 138T416 3Q421 -18 421 -48T423 -349Q423 -397 423 -472Q424 -677 428 -694Q429 -697 429 -699Q434 -722 443 -743T465 -782T491 -816T519 -845T548 -868T574 -886T595 -899T610 -908L616 -910Q618 -912 618 -928V-943Z"/><path id="MJX-1-TEX-I-1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"/><path id="MJX-1-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"/><path id="MJX-1-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"/><path id="MJX-1-TEX-N-31" d="M213 578L200 573Q186 568 160 563T102 556H83V602H102Q149 604 189 617T245 641T273 663Q275 666 285 666Q294 666 302 660V361L303 61Q310 54 315 52T339 48T401 46H427V0H416Q395 3 257 3Q121 3 100 0H88V46H114Q136 46 152 46T177 47T193 50T201 52T207 57T213 61V578Z"/><path id="MJX-1-TEX-N-A0" d=""/><path id="MJX-1-TEX-I-1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/><path id="MJX-1-TEX-I-1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"/><path id="MJX-1-TEX-I-1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"/><path id="MJX-1-TEX-I-1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"/><path id="MJX-1-TEX-I-1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/><path id="MJX-1-TEX-N-32" d="M109 429Q82 429 66 447T50 491Q50 562 103 614T235 666Q326 666 387 610T449 465Q449 422 429 383T381 315T301 241Q265 210 201 149L142 93L218 92Q375 92 385 97Q392 99 409 186V189H449V186Q448 183 436 95T421 3V0H50V19V31Q50 38 56 46T86 81Q115 113 136 137Q145 147 170 174T204 211T233 244T261 278T284 308T305 340T320 369T333 401T340 431T343 464Q343 527 309 573T212 619Q179 619 154 602T119 569T109 550Q109 549 114 549Q132 549 151 535T170 489Q170 464 154 447T109 429Z"/></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mrow"><g data-mml-node="mo" transform="translate(0 -0.5)"><use data-c="7B" xlink:href="#MJX-1-TEX-S3-7B"/></g><g data-mml-node="mtable" transform="translate(750,0)"><g data-mml-node="mtr" transform="translate(0,618.6)"><g data-mml-node="mtd"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D450" xlink:href="#MJX-1-TEX-I-1D450"/></g><g data-mml-node="mi" transform="translate(466,-150) scale(0.707)"><use data-c="1D45D" xlink:href="#MJX-1-TEX-I-1D45D"/></g></g><g data-mml-node="mo" transform="translate(1149.5,0)"><use data-c="3D" xlink:href="#MJX-1-TEX-N-3D"/></g><g data-mml-node="mi" transform="translate(2205.2,0)"><use data-c="1D450" xlink:href="#MJX-1-TEX-I-1D450"/></g><g data-mml-node="mn" transform="translate(2638.2,0)"><use data-c="31" xlink:href="#MJX-1-TEX-N-31"/></g><g data-mml-node="mtext" transform="translate(3138.2,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(3388.2,0)"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(4266.2,0)"><use data-c="1D45C" xlink:href="#MJX-1-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(4751.2,0)"><use data-c="1D451" xlink:href="#MJX-1-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(5271.2,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(5521.2,0)"><use data-c="1D45D" xlink:href="#MJX-1-TEX-I-1D45D"/></g><g data-mml-node="mo" transform="translate(6302,0)"><use data-c="3D" xlink:href="#MJX-1-TEX-N-3D"/></g><g data-mml-node="msup" transform="translate(7357.8,0)"><g data-mml-node="mi"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="TeXAtom" transform="translate(911,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D452" xlink:href="#MJX-1-TEX-I-1D452"/></g></g></g><g data-mml-node="mtext" transform="translate(8648.3,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(8898.3,0)"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(9776.3,0)"><use data-c="1D45C" xlink:href="#MJX-1-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(10261.3,0)"><use data-c="1D451" xlink:href="#MJX-1-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(10781.3,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(11031.3,0)"><use data-c="1D45D" xlink:href="#MJX-1-TEX-I-1D45D"/></g></g></g><g data-mml-node="mtr" transform="translate(0,-618.6)"><g data-mml-node="mtd"><g data-mml-node="msub"><g data-mml-node="mi"><use data-c="1D450" xlink:href="#MJX-1-TEX-I-1D450"/></g><g data-mml-node="mi" transform="translate(466,-150) scale(0.707)"><use data-c="1D45F" xlink:href="#MJX-1-TEX-I-1D45F"/></g></g><g data-mml-node="mo" transform="translate(1112.7,0)"><use data-c="3D" xlink:href="#MJX-1-TEX-N-3D"/></g><g data-mml-node="mi" transform="translate(2168.5,0)"><use data-c="1D450" xlink:href="#MJX-1-TEX-I-1D450"/></g><g data-mml-node="mn" transform="translate(2601.5,0)"><use data-c="32" xlink:href="#MJX-1-TEX-N-32"/></g><g data-mml-node="mtext" transform="translate(3101.5,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(3351.5,0)"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(4229.5,0)"><use data-c="1D45C" xlink:href="#MJX-1-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(4714.5,0)"><use data-c="1D451" xlink:href="#MJX-1-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(5234.5,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(5484.5,0)"><use data-c="1D45F" xlink:href="#MJX-1-TEX-I-1D45F"/></g><g data-mml-node="mo" transform="translate(6213.2,0)"><use data-c="3D" xlink:href="#MJX-1-TEX-N-3D"/></g><g data-mml-node="msup" transform="translate(7269,0)"><g data-mml-node="mi"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="TeXAtom" transform="translate(911,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D452" xlink:href="#MJX-1-TEX-I-1D452"/></g></g></g><g data-mml-node="mtext" transform="translate(8559.5,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(8809.5,0)"><use data-c="1D45A" xlink:href="#MJX-1-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(9687.5,0)"><use data-c="1D45C" xlink:href="#MJX-1-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(10172.5,0)"><use data-c="1D451" xlink:href="#MJX-1-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(10692.5,0)"><use data-c="A0" xlink:href="#MJX-1-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(10942.5,0)"><use data-c="1D45F" xlink:href="#MJX-1-TEX-I-1D45F"/></g></g></g></g><g data-mml-node="mo" transform="translate(12284.3,0) translate(0 250)"/></g></g></g></svg></p>
+<p>这样求出来的就是：<svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="16.603ex" height="2.009ex" role="img" focusable="false" viewbox="0 -694 7338.5 888" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="MJX-2-TEX-I-1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"/><path id="MJX-2-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"/><path id="MJX-2-TEX-I-1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/><path id="MJX-2-TEX-I-1D452" d="M39 168Q39 225 58 272T107 350T174 402T244 433T307 442H310Q355 442 388 420T421 355Q421 265 310 237Q261 224 176 223Q139 223 138 221Q138 219 132 186T125 128Q125 81 146 54T209 26T302 45T394 111Q403 121 406 121Q410 121 419 112T429 98T420 82T390 55T344 24T281 -1T205 -11Q126 -11 83 42T39 168ZM373 353Q367 405 305 405Q272 405 244 391T199 357T170 316T154 280T149 261Q149 260 169 260Q282 260 327 284T373 353Z"/><path id="MJX-2-TEX-N-A0" d=""/><path id="MJX-2-TEX-I-1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"/><path id="MJX-2-TEX-I-1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"/><path id="MJX-2-TEX-I-1D45D" d="M23 287Q24 290 25 295T30 317T40 348T55 381T75 411T101 433T134 442Q209 442 230 378L240 387Q302 442 358 442Q423 442 460 395T497 281Q497 173 421 82T249 -10Q227 -10 210 -4Q199 1 187 11T168 28L161 36Q160 35 139 -51T118 -138Q118 -144 126 -145T163 -148H188Q194 -155 194 -157T191 -175Q188 -187 185 -190T172 -194Q170 -194 161 -194T127 -193T65 -192Q-5 -192 -24 -194H-32Q-39 -187 -39 -183Q-37 -156 -26 -148H-6Q28 -147 33 -136Q36 -130 94 103T155 350Q156 355 156 364Q156 405 131 405Q109 405 94 377T71 316T59 280Q57 278 43 278H29Q23 284 23 287ZM178 102Q200 26 252 26Q282 26 310 49T356 107Q374 141 392 215T411 325V331Q411 405 350 405Q339 405 328 402T306 393T286 380T269 365T254 350T243 336T235 326L232 322Q232 321 229 308T218 264T204 212Q178 106 178 102Z"/><path id="MJX-2-TEX-N-2217" d="M229 286Q216 420 216 436Q216 454 240 464Q241 464 245 464T251 465Q263 464 273 456T283 436Q283 419 277 356T270 286L328 328Q384 369 389 372T399 375Q412 375 423 365T435 338Q435 325 425 315Q420 312 357 282T289 250L355 219L425 184Q434 175 434 161Q434 146 425 136T401 125Q393 125 383 131T328 171L270 213Q283 79 283 63Q283 53 276 44T250 35Q231 35 224 44T216 63Q216 80 222 143T229 213L171 171Q115 130 110 127Q106 124 100 124Q87 124 76 134T64 161Q64 166 64 169T67 175T72 181T81 188T94 195T113 204T138 215T170 230T210 250L74 315Q65 324 65 338Q65 353 74 363T98 374Q106 374 116 368T171 328L229 286Z"/><path id="MJX-2-TEX-I-1D45F" d="M21 287Q22 290 23 295T28 317T38 348T53 381T73 411T99 433T132 442Q161 442 183 430T214 408T225 388Q227 382 228 382T236 389Q284 441 347 441H350Q398 441 422 400Q430 381 430 363Q430 333 417 315T391 292T366 288Q346 288 334 299T322 328Q322 376 378 392Q356 405 342 405Q286 405 239 331Q229 315 224 298T190 165Q156 25 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 114 189T154 366Q154 405 128 405Q107 405 92 377T68 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="mi"><use data-c="1D450" xlink:href="#MJX-2-TEX-I-1D450"/></g><g data-mml-node="mo" transform="translate(710.8,0)"><use data-c="3D" xlink:href="#MJX-2-TEX-N-3D"/></g><g data-mml-node="msup" transform="translate(1766.6,0)"><g data-mml-node="mi"><use data-c="1D45A" xlink:href="#MJX-2-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(911,363) scale(0.707)"><use data-c="1D452" xlink:href="#MJX-2-TEX-I-1D452"/></g></g><g data-mml-node="mtext" transform="translate(3057.1,0)"><use data-c="A0" xlink:href="#MJX-2-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(3307.1,0)"><use data-c="1D45A" xlink:href="#MJX-2-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(4185.1,0)"><use data-c="1D45C" xlink:href="#MJX-2-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(4670.1,0)"><use data-c="1D451" xlink:href="#MJX-2-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(5190.1,0)"><use data-c="A0" xlink:href="#MJX-2-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(5440.1,0)"><use data-c="1D45D" xlink:href="#MJX-2-TEX-I-1D45D"/></g><g data-mml-node="mo" transform="translate(6165.3,0)"><use data-c="2217" xlink:href="#MJX-2-TEX-N-2217"/></g><g data-mml-node="mi" transform="translate(6887.5,0)"><use data-c="1D45F" xlink:href="#MJX-2-TEX-I-1D45F"/></g></g></g></svg></p>
+<p>然后就是正常解个RSA就行。</p>
+<details>
+    <summary>点击展开代码</summary>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">c1 = <span class="number">36918910341116680090654563538246204134840776220077189276689868322808977412566781872132517635399441578464309667998925236488280867210758507758915311644529399878185776345227817559234605958783077866016808605942558810445187434690812992072238407431218047312484354859724174751718700409405142819140636116559320641695</span></span><br><span class="line">c2 = <span class="number">15601788304485903964195122196382181273808496834343051747331984997977255326224514191280515875796224074672957848566506948553165091090701291545031857563686815297483181025074113978465751897596411324331847008870832527695258040104858667684793196948970048750296571273364559767074262996595282324974180754813257013752</span></span><br><span class="line">p = <span class="number">12101696894052331138951718202838643670037274599483776996203693662637821825873973767235442427190607145999472731101517998719984942030184683388441121181962123</span></span><br><span class="line">r = <span class="number">10199001137987151966640837133782537428248507382360655526592866939552984259171772190788036403425837649697437126360866173688083643144865107648483668545682383</span></span><br><span class="line">cp = c1 % p</span><br><span class="line">cr = c2 % r</span><br><span class="line">pr = invert(p, r)</span><br><span class="line">rp = invert(r, p)</span><br><span class="line">e = <span class="number">31413537523</span></span><br><span class="line">cpr = <span class="built_in">int</span>((cp*r*rp + cr*p*pr) % (p*r))</span><br><span class="line">d = invert(e, (p-<span class="number">1</span>)*(r-<span class="number">1</span>))</span><br><span class="line">m = <span class="built_in">pow</span>(cpr, d, p*r)</span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(m))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+<hr>
+<h2><span id="2break">2，break</span></h2>
+<p>其实这题，主要考了 “手撕证书”——懂pem证书的结构，可以参考<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/461349946">文章1</a>或<a target="_blank" rel="noopener" href="https://tover.xyz/p/pem-by-hand/#%E6%89%8B%E6%92%95RSA%E7%A7%81%E9%92%A5">文章2</a>，当然我接下来也会讲的。</p>
+<p>首先，对于本题而言，因为看到证书有**-----END PRIVATE KEY-----**，说明给的是证书的后半部分；但具体有多少内容，得”手撕“才知道。</p>
+<p>所以得先转换PEM为DER：</p>
+<details>
+    <summary>点击展开代码</summary>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> base64 <span class="keyword">import</span> b64decode</span><br><span class="line"><span class="keyword">import</span> binascii</span><br><span class="line"></span><br><span class="line">s = <span class="string">&#x27;&#x27;&#x27;Bc8tSTrvGJm2oYuCzIz+Yg4nwwKBgQDiYUawe5Y+rPbFhVOMVB8ZByfMa4LjeSDd</span></span><br><span class="line"><span class="string">Z23jEGvylBHSeyvFCQq3ISUE40k1D2XmmeaZML3a1nUn6ORIWGaG2phcwrWLkR6n</span></span><br><span class="line"><span class="string">ubVmb1QJSzgzmFHGnL56KHByZxD9q6DPB+o6gGWt8/6ddBl2NIZU/1btdPQgojfA</span></span><br><span class="line"><span class="string">XXJFzR92RQKBgQC7qlB0U7m2U4FdG9eelSd+WSKNUVllZAuHji7jgh7Ox6La9xN5</span></span><br><span class="line"><span class="string">miGZ1yvP44yX218OJ9Zi08o6vIrM6Eil45KzTtGm4iuIn8CMpox+5eUtoxyvxa9r</span></span><br><span class="line"><span class="string">s2Wu+IRZN9zCME+p+qI8/TG27dIyDzsdgNqcUo8ESls7uW5/FEA7bYTCiQKBgQC7</span></span><br><span class="line"><span class="string">1KybeB+kZ0zlfIdi8tVOpeI+uaHDbdh3+/5wHUsD3hmfg7VAag0q/2RA1vkB/oG1</span></span><br><span class="line"><span class="string">QVLVHl0Yu0I/1/u5jyeakrtClAegAsvlrK+3i321rGS4YpTPb3SX1P/f3GZ7o7Ds</span></span><br><span class="line"><span class="string">touA+NHk8IL9T7xkmJYw5h/RLG32ucH6aU6MXfLR5QKBgD/skfdFxGWxhHk6U1mS</span></span><br><span class="line"><span class="string">27IM9jJNg9xLz5nxzkqPPhLn+rdgIIuTuQtv++eEjEP++7ZV10rg5yKVJd/bxy8H</span></span><br><span class="line"><span class="string">2IN7aQo7kZWulHTQDZMFwgOhn0u6glJi+qC8bWzYDFOQSFrY9XQ3vwKMspqm+697</span></span><br><span class="line"><span class="string">xM+dMUW0LML6oUE9ZjEiAY/5&#x27;&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line">s = b64decode(s)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(binascii.hexlify(s))</span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">05cf2d493aef1899b6a18b82cc8cfe620e27c302818100e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f764502818100bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c28902818100bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e50281803fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br></pre></td></tr></table></figure>
+</details>
+<p>那我们怎么“手撕”呢？可以根据一些常见的参数以及密文去 “手撕”，下表里有一些常见的证书参数：</p>
+<table>
+<thead>
+<tr>
+<th><strong>数据</strong></th>
+<th><strong>长度</strong></th>
+<th><strong>名称</strong></th>
+<th><strong>含义</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>30</td>
+<td rowspan="2">1</td>
+<td>标记符</td>
+<td>代表ASN.1结构的开始</td>
+</tr>
+<tr>
+<td>82</td>
+<td>长度类型</td>
+<td>代表后面跟着一个双字节长度</td>
+</tr>
+<tr>
+<td>025b</td>
+<td>2</td>
+<td>长度</td>
+<td>代表后续内容的总长度为603字节</td>
+</tr>
+<tr>
+<td>02</td>
+<td rowspan="6">1</td>
+<td>类型</td>
+<td>代表整型</td>
+</tr>
+<tr>
+<td>01</td>
+<td>长度</td>
+<td>代表1字节</td>
+</tr>
+<tr>
+<td>00</td>
+<td>值</td>
+<td>代表整数0</td>
+</tr>
+<tr>
+<td>02</td>
+<td>类型</td>
+<td>代表整型</td>
+</tr>
+<tr>
+<td>81</td>
+<td>长度类型</td>
+<td>代表后面跟着一个单字节长度</td>
+</tr>
+<tr>
+<td>80</td>
+<td>长度</td>
+<td>代表数据长度为128字节</td>
+</tr>
+<tr>
+<td rowspan="2">…</td>
+<td>128</td>
+<td>值</td>
+<td>数据值1</td>
+</tr>
+<tr>
+<td colspan="3"></td>
+</tr>
+</tbody>
+</table>
+<p>当然，我们这里只会用到02、81、80这几个参数哈。</p>
+<p>因为密文有点长，所以我就猜了个<strong>0281</strong>开头的是一个数的数据，于是可以拆出这样的形式（因为数据太长了，就只列了个格式）：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span><br><span class="line">028181 数字<span class="number">1</span></span><br><span class="line">028181 数字<span class="number">2</span></span><br><span class="line">028181 数字<span class="number">3</span></span><br><span class="line">028180 数字<span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>接着，我参考的是<a target="_blank" rel="noopener" href="https://zhuanlan.zhihu.com/p/461349946">文章1</a>，所以可以得到：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span><br><span class="line">q 028181 数字<span class="number">1</span></span><br><span class="line">dp 028181 数字<span class="number">2</span></span><br><span class="line">dq 028181 数字<span class="number">3</span></span><br><span class="line">q^&#123;-<span class="number">1</span>&#125; mod p 028180 数字<span class="number">4</span></span><br></pre></td></tr></table></figure>
+<p>然后，因为有q和dq，所以我是直接猜了个最简单的情况：<strong>m&lt;q</strong>，那么便有：<svg style="vertical-align: -0.439ex;" xmlns="http://www.w3.org/2000/svg" width="14.171ex" height="2.37ex" role="img" focusable="false" viewbox="0 -853.7 6263.5 1047.7" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><path id="MJX-3-TEX-I-1D450" d="M34 159Q34 268 120 355T306 442Q362 442 394 418T427 355Q427 326 408 306T360 285Q341 285 330 295T319 325T330 359T352 380T366 386H367Q367 388 361 392T340 400T306 404Q276 404 249 390Q228 381 206 359Q162 315 142 235T121 119Q121 73 147 50Q169 26 205 26H209Q321 26 394 111Q403 121 406 121Q410 121 419 112T429 98T420 83T391 55T346 25T282 0T202 -11Q127 -11 81 37T34 159Z"/><path id="MJX-3-TEX-I-1D451" d="M366 683Q367 683 438 688T511 694Q523 694 523 686Q523 679 450 384T375 83T374 68Q374 26 402 26Q411 27 422 35Q443 55 463 131Q469 151 473 152Q475 153 483 153H487H491Q506 153 506 145Q506 140 503 129Q490 79 473 48T445 8T417 -8Q409 -10 393 -10Q359 -10 336 5T306 36L300 51Q299 52 296 50Q294 48 292 46Q233 -10 172 -10Q117 -10 75 30T33 157Q33 205 53 255T101 341Q148 398 195 420T280 442Q336 442 364 400Q369 394 369 396Q370 400 396 505T424 616Q424 629 417 632T378 637H357Q351 643 351 645T353 664Q358 683 366 683ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"/><path id="MJX-3-TEX-I-1D45E" d="M33 157Q33 258 109 349T280 441Q340 441 372 389Q373 390 377 395T388 406T404 418Q438 442 450 442Q454 442 457 439T460 434Q460 425 391 149Q320 -135 320 -139Q320 -147 365 -148H390Q396 -156 396 -157T393 -175Q389 -188 383 -194H370Q339 -192 262 -192Q234 -192 211 -192T174 -192T157 -193Q143 -193 143 -185Q143 -182 145 -170Q149 -154 152 -151T172 -148Q220 -148 230 -141Q238 -136 258 -53T279 32Q279 33 272 29Q224 -10 172 -10Q117 -10 75 30T33 157ZM352 326Q329 405 277 405Q242 405 210 374T160 293Q131 214 119 129Q119 126 119 118T118 106Q118 61 136 44T179 26Q233 26 290 98L298 109L352 326Z"/><path id="MJX-3-TEX-N-A0" d=""/><path id="MJX-3-TEX-I-1D45A" d="M21 287Q22 293 24 303T36 341T56 388T88 425T132 442T175 435T205 417T221 395T229 376L231 369Q231 367 232 367L243 378Q303 442 384 442Q401 442 415 440T441 433T460 423T475 411T485 398T493 385T497 373T500 364T502 357L510 367Q573 442 659 442Q713 442 746 415T780 336Q780 285 742 178T704 50Q705 36 709 31T724 26Q752 26 776 56T815 138Q818 149 821 151T837 153Q857 153 857 145Q857 144 853 130Q845 101 831 73T785 17T716 -10Q669 -10 648 17T627 73Q627 92 663 193T700 345Q700 404 656 404H651Q565 404 506 303L499 291L466 157Q433 26 428 16Q415 -11 385 -11Q372 -11 364 -4T353 8T350 18Q350 29 384 161L420 307Q423 322 423 345Q423 404 379 404H374Q288 404 229 303L222 291L189 157Q156 26 151 16Q138 -11 108 -11Q95 -11 87 -5T76 7T74 17Q74 30 112 181Q151 335 151 342Q154 357 154 369Q154 405 129 405Q107 405 92 377T69 316T57 280Q55 278 41 278H27Q21 284 21 287Z"/><path id="MJX-3-TEX-I-1D45C" d="M201 -11Q126 -11 80 38T34 156Q34 221 64 279T146 380Q222 441 301 441Q333 441 341 440Q354 437 367 433T402 417T438 387T464 338T476 268Q476 161 390 75T201 -11ZM121 120Q121 70 147 48T206 26Q250 26 289 58T351 142Q360 163 374 216T388 308Q388 352 370 375Q346 405 306 405Q243 405 195 347Q158 303 140 230T121 120Z"/><path id="MJX-3-TEX-N-3D" d="M56 347Q56 360 70 367H707Q722 359 722 347Q722 336 708 328L390 327H72Q56 332 56 347ZM56 153Q56 168 72 173H708Q722 163 722 153Q722 140 707 133H70Q56 140 56 153Z"/></defs><g stroke="currentColor" fill="currentColor" stroke-width="0" transform="scale(1,-1)"><g data-mml-node="math"><g data-mml-node="msup"><g data-mml-node="mi"><use data-c="1D450" xlink:href="#MJX-3-TEX-I-1D450"/></g><g data-mml-node="TeXAtom" transform="translate(466,363) scale(0.707)" data-mjx-texclass="ORD"><g data-mml-node="mi"><use data-c="1D451" xlink:href="#MJX-3-TEX-I-1D451"/></g><g data-mml-node="mi" transform="translate(520,0)"><use data-c="1D45E" xlink:href="#MJX-3-TEX-I-1D45E"/></g></g></g><g data-mml-node="mtext" transform="translate(1209,0)"><use data-c="A0" xlink:href="#MJX-3-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(1459,0)"><use data-c="1D45A" xlink:href="#MJX-3-TEX-I-1D45A"/></g><g data-mml-node="mi" transform="translate(2337,0)"><use data-c="1D45C" xlink:href="#MJX-3-TEX-I-1D45C"/></g><g data-mml-node="mi" transform="translate(2822,0)"><use data-c="1D451" xlink:href="#MJX-3-TEX-I-1D451"/></g><g data-mml-node="mtext" transform="translate(3342,0)"><use data-c="A0" xlink:href="#MJX-3-TEX-N-A0"/></g><g data-mml-node="mi" transform="translate(3592,0)"><use data-c="1D45E" xlink:href="#MJX-3-TEX-I-1D45E"/></g><g data-mml-node="mo" transform="translate(4329.7,0)"><use data-c="3D" xlink:href="#MJX-3-TEX-N-3D"/></g><g data-mml-node="mi" transform="translate(5385.5,0)"><use data-c="1D45A" xlink:href="#MJX-3-TEX-I-1D45A"/></g></g></g></svg>；最后还真这样（</p>
+<p>脚本如下：</p>
+<details>
+    <summary>点击展开代码</summary>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 证书格式转换</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">from base64 import b64decode</span></span><br><span class="line"><span class="string">import binascii</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">s = &#x27;&#x27;&#x27;Bc8tSTrvGJm2oYuCzIz+Yg4nwwKBgQDiYUawe5Y+rPbFhVOMVB8ZByfMa4LjeSDd</span></span><br><span class="line"><span class="string">Z23jEGvylBHSeyvFCQq3ISUE40k1D2XmmeaZML3a1nUn6ORIWGaG2phcwrWLkR6n</span></span><br><span class="line"><span class="string">ubVmb1QJSzgzmFHGnL56KHByZxD9q6DPB+o6gGWt8/6ddBl2NIZU/1btdPQgojfA</span></span><br><span class="line"><span class="string">XXJFzR92RQKBgQC7qlB0U7m2U4FdG9eelSd+WSKNUVllZAuHji7jgh7Ox6La9xN5</span></span><br><span class="line"><span class="string">miGZ1yvP44yX218OJ9Zi08o6vIrM6Eil45KzTtGm4iuIn8CMpox+5eUtoxyvxa9r</span></span><br><span class="line"><span class="string">s2Wu+IRZN9zCME+p+qI8/TG27dIyDzsdgNqcUo8ESls7uW5/FEA7bYTCiQKBgQC7</span></span><br><span class="line"><span class="string">1KybeB+kZ0zlfIdi8tVOpeI+uaHDbdh3+/5wHUsD3hmfg7VAag0q/2RA1vkB/oG1</span></span><br><span class="line"><span class="string">QVLVHl0Yu0I/1/u5jyeakrtClAegAsvlrK+3i321rGS4YpTPb3SX1P/f3GZ7o7Ds</span></span><br><span class="line"><span class="string">touA+NHk8IL9T7xkmJYw5h/RLG32ucH6aU6MXfLR5QKBgD/skfdFxGWxhHk6U1mS</span></span><br><span class="line"><span class="string">27IM9jJNg9xLz5nxzkqPPhLn+rdgIIuTuQtv++eEjEP++7ZV10rg5yKVJd/bxy8H</span></span><br><span class="line"><span class="string">2IN7aQo7kZWulHTQDZMFwgOhn0u6glJi+qC8bWzYDFOQSFrY9XQ3vwKMspqm+697</span></span><br><span class="line"><span class="string">xM+dMUW0LML6oUE9ZjEiAY/5&#x27;&#x27;&#x27;</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">s = b64decode(s)</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">print(binascii.hexlify(s))</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 证书拆解</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">05cf2d493aef1899b6a18b82cc8cfe620e27c3</span></span><br><span class="line"><span class="string">q 028181 00e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f7645</span></span><br><span class="line"><span class="string">dp 028181 00bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c289</span></span><br><span class="line"><span class="string">dq 028181 00bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e5</span></span><br><span class="line"><span class="string">qp 028180 3fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="comment"># 解个最简单的情况（</span></span><br><span class="line"><span class="keyword">from</span> Crypto.Util.number <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">from</span> gmpy2 <span class="keyword">import</span> *</span><br><span class="line"></span><br><span class="line">q = <span class="number">0x00e26146b07b963eacf6c585538c541f190727cc6b82e37920dd676de3106bf29411d27b2bc5090ab7212504e349350f65e699e69930bddad67527e8e448586686da985cc2b58b911ea7b9b5666f54094b38339851c69cbe7a2870726710fdaba0cf07ea3a8065adf3fe9d741976348654ff56ed74f420a237c05d7245cd1f7645</span></span><br><span class="line">dp = <span class="number">0x00bbaa507453b9b653815d1bd79e95277e59228d515965640b878e2ee3821ecec7a2daf713799a2199d72bcfe38c97db5f0e27d662d3ca3abc8acce848a5e392b34ed1a6e22b889fc08ca68c7ee5e52da31cafc5af6bb365aef8845937dcc2304fa9faa23cfd31b6edd2320f3b1d80da9c528f044a5b3bb96e7f14403b6d84c289</span></span><br><span class="line">dq = <span class="number">0x00bbd4ac9b781fa4674ce57c8762f2d54ea5e23eb9a1c36dd877fbfe701d4b03de199f83b5406a0d2aff6440d6f901fe81b54152d51e5d18bb423fd7fbb98f279a92bb429407a002cbe5acafb78b7db5ac64b86294cf6f7497d4ffdfdc667ba3b0ecb68b80f8d1e4f082fd4fbc64989630e61fd12c6df6b9c1fa694e8c5df2d1e5</span></span><br><span class="line">qp = <span class="number">0x3fec91f745c465b184793a535992dbb20cf6324d83dc4bcf99f1ce4a8f3e12e7fab760208b93b90b6ffbe7848c43fefbb655d74ae0e7229525dfdbc72f07d8837b690a3b9195ae9474d00d9305c203a19f4bba825262faa0bc6d6cd80c5390485ad8f57437bf028cb29aa6fbaf7bc4cf9d3145b42cc2faa1413d663122018ff9</span></span><br><span class="line">c = <span class="number">6081370370545409218106271903400346695565292992689150366474451604281551878507114813906275593034729563149286993189430514737137534129570304832172520820901940874698337733991868650159489601159238582002010625666203730677577976307606665760650563172302688129824842780090723167480409842707790983962415315804311334507726664838464859751689906850572044873633896253285381878416855505301919877714965930289139921111644393144686543207867970807469735534838601255712764863973853116693691206791007433101433703535127367245739289103650669095061417223994665200039533840922696282929063608853551346533188464573323230476645532002621795338655</span></span><br><span class="line"><span class="built_in">print</span>(long_to_bytes(<span class="built_in">pow</span>(c, dq, q)))</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</details>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+        
+      </div>
+
+         
+    </div>
+    
+     
+  </div>
+  
+    
+<nav id="article-nav">
+  <a class="article-nav-btn left "
+    
+      href="/2024/03/16/SICTF2024-Crypto/"
+      title="SICTF2024-Crypto"
+     >
+    <i class="fa-solid fa-angle-left"></i>
+    <p class="title-text">
+      
+        SICTF2024-Crypto
+        
+    </p>
+  </a>
+  <a class="article-nav-btn right "
+    
+      href="/2023/12/24/2023%E5%AE%89%E6%B4%B5%E6%9D%AF%E5%A4%8D%E7%8E%B0/"
+      title="2023安洵杯复现"
+     >
+
+    <p class="title-text">
+      
+        2023安洵杯复现
+        
+    </p>
+    <i class="fa-solid fa-angle-right"></i>
+  </a>
+</nav>
+
+
+  
+</article>
+
+
+  
+  <script src='//unpkg.com/valine/dist/Valine.min.js'></script>
+  <div id="comment-card" class="comment-card">
+    <div class="main-title-bar">
+      <div class="main-title-dot"></div>
+      <div class="main-title">Comments </div>
+    </div>
+    <div id="vcomments"></div>
+  </div>
+  <script>
+      new Valine({"enable":true,"appId":"onZzJd7ip1OEW9EHD0MWJlHL-gzGzoHsz","appKey":"ms6ASbMn9HFzAwatXITnIAdk","placeholder":"Just go go","pageSize":10,"highlight":true,"serverURLs":null,"el":"#vcomments"});
+  </script>
+
+
+
+
+    </div>
+    <div id="footer-wrapper">
+      <footer id="footer">
+  
+  <script src="/js/prism.js" async></script>
+  <div id="footer-info" class="inner">
+    
+    &copy; 2024 Shin<br>
+    Powered by <a href="https://hexo.io/" target="_blank">Hexo</a> & Theme <a target="_blank" rel="noopener" href="https://github.com/saicaca/hexo-theme-vivia">Vivia</a>
+  </div>
+</footer>
+
+    </div>
+    
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+      <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+    
+    <div class="back-to-top-wrapper">
+    <button id="back-to-top-btn" class="back-to-top-btn hide" onclick="topFunction()">
+        <i class="fa-solid fa-angle-up"></i>
+    </button>
+</div>
+
+<script>
+    function topFunction() {
+        window.scroll({ top: 0, behavior: 'smooth' });
+    }
+    let btn = document.getElementById('back-to-top-btn');
+    function scrollFunction() {
+        if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
+            btn.classList.remove('hide')
+        } else {
+            btn.classList.add('hide')
+        }
+    }
+    window.onscroll = function() {
+        scrollFunction();
+    }
+</script>
+
+  </div>
+  <script src="/js/light-dark-switch.js"></script>
+</body>
+</html>
