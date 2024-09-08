@@ -8,7 +8,7 @@ set TIMESTAMP=%TIMESTAMP: =_%
 set TIMESTAMP=%TIMESTAMP::=-%
 set TIMESTAMP=%TIMESTAMP: =_%
 
-:: 提交本地更改
+:: 检查并暂存所有更改
 echo Staging all changes...
 git add .
 if %ERRORLEVEL% NEQ 0 (
@@ -16,17 +16,28 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-:: 检查是否有更改
-git diff-index --quiet HEAD
-if %ERRORLEVEL% EQU 1 (
-    echo Committing changes...
-    git commit -m "Automated commit: %TIMESTAMP%"
-    if %ERRORLEVEL% NEQ 0 (
-        echo Failed to commit changes. Please check the error message above.
-        exit /b %ERRORLEVEL%
-    )
-) else (
-    echo No changes to commit.
+:: 创建空提交（即使没有更改）
+echo Creating empty commit...
+git commit --allow-empty -m "Automated empty commit: %TIMESTAMP%"
+if %ERRORLEVEL% NEQ 0 (
+    echo Failed to create empty commit. Please check the error message above.
+    exit /b %ERRORLEVEL%
+)
+
+:: 确保没有未提交的更改
+echo Checking for uncommitted changes...
+git status --porcelain
+if %ERRORLEVEL% NEQ 0 (
+    echo Error checking status. Please check the error message above.
+    exit /b %ERRORLEVEL%
+)
+
+:: 确保工作区干净
+echo Stashing any local changes...
+git stash --include-untracked
+if %ERRORLEVEL% NEQ 0 (
+    echo Failed to stash changes. Please check the error message above.
+    exit /b %ERRORLEVEL%
 )
 
 :: 拉取远程更改并合并
@@ -42,6 +53,14 @@ echo Pushing changes to remote...
 git push origin main
 if %ERRORLEVEL% NEQ 0 (
     echo Failed to push changes. Please check the error message above.
+    exit /b %ERRORLEVEL%
+)
+
+:: 还原存储的更改
+echo Applying stashed changes...
+git stash pop
+if %ERRORLEVEL% NEQ 0 (
+    echo Failed to apply stashed changes. Please check the error message above.
     exit /b %ERRORLEVEL%
 )
 
