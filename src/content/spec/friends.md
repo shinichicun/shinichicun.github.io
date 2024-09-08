@@ -66,7 +66,7 @@
         </style>
         <div class="links-content">
             <a class="card" target="_blank" rel="noopener" href="https://boogipop.com/">
-                <img class="ava" src="https://p.sda1.dev/17/d03628f99ad34c0518163faca50c680a/O7eqKP.jpg">
+                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCYQb.jpg">
                 <div class="card-header">
                     <div>Boogipop</div>
                     <div class="info">HnuSec最帅的Web✌</div>
@@ -80,7 +80,7 @@
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="http://www.miaoaixuan.cn/">
-                <img class="ava" src="https://p.sda1.dev/17/ec65411fffde2ad1d432fa782cf08c63/avatar.jpg">
+                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCVrP.jpg">
                 <div class="card-header">
                     <div>泠鹇</div>
                     <div class="info">HnuSec最帅的misc✌</div>
