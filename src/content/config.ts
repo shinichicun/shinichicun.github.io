@@ -9,6 +9,10 @@ const postsCollection = defineCollection({
     image: z.string().optional().default(''),
     tags: z.array(z.string()).optional().default([]),
     category: z.string().optional().default(''),
+<<<<<<< HEAD
+=======
+    language: z.string().optional().default(''),
+>>>>>>> 9cd657fab4fed8d43b211821418e90ca668785e8
 
     /* For internal use */
     prevTitle: z.string().default(''),
