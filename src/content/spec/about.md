@@ -8,6 +8,14 @@
 >
 > **头像地址：** <https://ooo.0x0.ooo/2023/12/20/OKzC7r.jpg>
 
+## 图片来源
+
+> 头像：[#honkaistarrail March 7th - sparkofapple的插画 - pixiv](https://www.pixiv.net/artworks/121131392)
+>
+> 背景：崩铁官方（应该是？）
+>
+> Ciallo流萤(∠・ω< )⌒☆：[#崩坏星穹铁道 Ciallo流萤(∠・ω< )⌒☆ - ek121的插画 - pixiv](https://www.pixiv.net/artworks/117905866)
+
 ## About Me
 
 > - 海南大学本科在读
