@@ -107,13 +107,6 @@
                     <div class="info">HnuSec的Web✌</div>
                 </div>
             </a>
-            <a class="card" target="_blank" rel="noopener" href="https://glut4micum.github.io/">
-                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCj4B.jpg">
-                <div class="card-header">
-                    <div>谷氨酸棒状杆菌</div>
-                    <div class="info">HnuSec的Web✌</div>
-                </div>
-            </a>
             <a class="card" target="_blank" rel="noopener" href="http://www.berial.cn/">
                 <img class="ava" src="https://berial123.oss-cn-beijing.aliyuncs.com/%E5%A4%B4%E5%83%8F1.JPG">
                 <div class="card-header">
