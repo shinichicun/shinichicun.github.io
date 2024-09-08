@@ -1,6 +1,11 @@
 @echo off
 setlocal
 
+:: Set TimeStamp
+for /f "tokens=1-4 delims=:.," %%a in ("%TIME%") do set timestamp=%%a%%b%%c%%d
+for /f "tokens=1-3 delims=/ " %%a in ("%DATE%") do set date=%%a%%b%%c
+set datetime=%date%_%timestamp%
+
 :: Set repository path
 set REPO_DIR=E:\blog\shinichicun.github.io
 cd /d %REPO_DIR%
@@ -8,40 +13,26 @@ cd /d %REPO_DIR%
 echo Current directory: %REPO_DIR%
 echo.
 
-:: Check for changes
-echo Fetching latest updates from remote...
-git fetch
-echo.
+:: Set Commit
+set commit_message=Commit_%datetime%
+echo Commit Message: %commit_message%
 
-:: Show current status
-echo Current Git status:
-git status
-echo.
+git add .
 
-:: Check if there are changes to commit
-set HAS_CHANGES=0
-for /f "delims=" %%i in ('git status --porcelain') do (
-    set HAS_CHANGES=1
-    echo Change detected: %%i
+echo Committing changes...
+git commit -m "%commit_message%"
+if %ERRORLEVEL% neq 0 (
+    echo Error committing changes. Exiting.
+    exit /b %ERRORLEVEL%
 )
 
-:: If there are changes
-if %HAS_CHANGES%==1 (
-    echo.
-    echo There are new changes. Preparing to commit and sync...
-    git add .
-    echo Committing changes...
-    git commit -m "Automated commit"
-    echo Pushing to remote repository...
-    git push origin main
-    echo Commit and sync completed.
-) else (
-    echo.
-    echo No new changes. Performing empty commit...
-    git commit --allow-empty -m "Empty commit"
-    echo Pushing to remote repository...
-    git push origin main
-    echo Empty commit and sync completed.
+echo Pushing changes to remote repository...
+git push
+if %ERRORLEVEL% neq 0 (
+    echo Error pushing changes. Exiting.
+    exit /b %ERRORLEVEL%
 )
 
+echo Done.
 endlocal
+pause
