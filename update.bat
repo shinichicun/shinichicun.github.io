@@ -56,12 +56,11 @@ if %ERRORLEVEL% NEQ 0 (
     exit /b %ERRORLEVEL%
 )
 
-:: 还原存储的更改
+:: 还原存储的更改（如果有的话）
 echo Applying stashed changes...
-git stash pop
+git stash pop --index
 if %ERRORLEVEL% NEQ 0 (
-    echo Failed to apply stashed changes. Please check the error message above.
-    exit /b %ERRORLEVEL%
+    echo No stashed changes to apply or failed to apply stashed changes. Please check the error message above.
 )
 
 echo Repository updated and synchronized successfully.
