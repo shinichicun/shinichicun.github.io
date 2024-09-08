@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Hi！ 我是Shin
 
 ## 友链信息
@@ -32,3 +33,14 @@ QQ: base64 MjM5MzE0MTUwMQ==
 ## 假如有师傅想互换友链的话，欢迎联系我~~
 
 <img src="https://ooo.0x0.ooo/2024/03/21/Ogesfb.jpg" alt="1685637181469" style="zoom:30%;" />
+=======
+# About
+This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+
+::github{repo="saicaca/fuwari"}
+
+> ### Sources of images used in this site
+> - [Unsplash](https://unsplash.com/)
+> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
+> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+>>>>>>> 9cd657fab4fed8d43b211821418e90ca668785e8
