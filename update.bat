@@ -1,27 +1,47 @@
 @echo off
 setlocal
 
-:: 设置仓库路径
+:: Set repository path
 set REPO_DIR=E:\blog\shinichicun.github.io
 cd /d %REPO_DIR%
 
-:: 检查是否有更改
+echo Current directory: %REPO_DIR%
+echo.
+
+:: Check for changes
+echo Fetching latest updates from remote...
 git fetch
+echo.
+
+:: Show current status
+echo Current Git status:
 git status
+echo.
 
-:: 判断是否有变更需要提交
-for /f "delims=" %%i in ('git status --porcelain') do set HAS_CHANGES=1
+:: Check if there are changes to commit
+set HAS_CHANGES=0
+for /f "delims=" %%i in ('git status --porcelain') do (
+    set HAS_CHANGES=1
+    echo Change detected: %%i
+)
 
-:: 如果有变更
-if defined HAS_CHANGES (
-    echo "有新的更改，准备提交并同步..."
+:: If there are changes
+if %HAS_CHANGES%==1 (
+    echo.
+    echo There are new changes. Preparing to commit and sync...
     git add .
-    git commit -m "自动提交"
+    echo Committing changes...
+    git commit -m "Automated commit"
+    echo Pushing to remote repository...
     git push origin main
+    echo Commit and sync completed.
 ) else (
-    echo "没有新的更改，检查是否需要空提交..."
-    git commit --allow-empty -m "空提交" 
+    echo.
+    echo No new changes. Performing empty commit...
+    git commit --allow-empty -m "Empty commit"
+    echo Pushing to remote repository...
     git push origin main
+    echo Empty commit and sync completed.
 )
 
 endlocal
