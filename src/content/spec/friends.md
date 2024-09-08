@@ -101,7 +101,7 @@
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="https://natro92.fun/">
-                <img class="ava" src="https://s3.bmp.ovh/imgs/2023/03/12/d3fe3843da0a1878.jpg">
+                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCf3l.jpg">
                 <div class="card-header">
                     <div>Natro92</div>
                     <div class="info">HnuSec的Web✌</div>
