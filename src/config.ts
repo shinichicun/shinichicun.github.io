@@ -7,6 +7,10 @@ import type {
 import { LinkPreset } from './types/config'
 
 export const siteConfig: SiteConfig = {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 94d792f25310f12f7a48b576a6e6916afc6ab06a
   title: 'Shin\'s Blog',
   subtitle: 'Crypto',
   lang: 'en',         // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko'
@@ -18,6 +22,22 @@ export const siteConfig: SiteConfig = {
     enable: true,
     src: 'https://ooo.0x0.ooo/2024/09/08/OtCLiM.png',   // Relative to the /src directory. Relative to the /public directory if it starts with '/'
     position: 'top', // Equivalent to object-position, defaults center
+<<<<<<< HEAD
+=======
+=======
+  title: 'Fuwari',
+  subtitle: 'Demo Site',
+  lang: 'en',         // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko'
+  themeColor: {
+    hue: 250,         // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
+    fixed: false,     // Hide the theme color picker for visitors
+  },
+  banner: {
+    enable: false,
+    src: 'assets/images/demo-banner.png',   // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+    position: 'center', // Equivalent to object-position, defaults center
+>>>>>>> 9cd657fab4fed8d43b211821418e90ca668785e8
+>>>>>>> 94d792f25310f12f7a48b576a6e6916afc6ab06a
     credit: {
       enable: false,         // Display the credit text of the banner image
       text: '',              // Credit text to be displayed
