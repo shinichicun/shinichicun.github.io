@@ -139,7 +139,7 @@
                 <img class="ava" src="https://ooo.0x0.ooo/2024/09/02/Ot6MPY.png">
                 <div class="card-header">
                     <div>CFIT</div>
-                    <div class="info">HnuSec的Crypto✌</div>
+                    <div class="info">HnuSec的全栈✌</div>
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="http://orxiain.life">
