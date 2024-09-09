@@ -11,7 +11,7 @@ REM 获取当前星期几
 for /f "tokens=2 delims==" %%a in ('wmic path Win32_LocalTime get DayOfWeek /value') do set weekday=%%a
 
 REM 转换星期几的数字到中文名
-set "weekdays=星期日 星期一 星期二 星期三 星期四 星期五 星期六"
+set "weekdays=Sun Mon Tue Wed Thu Fri Sat"
 for /f "tokens=%weekday% delims= " %%a in ("%weekdays%") do set weekday_name=%%a
 
 :: 拼接日期和时间戳
