@@ -7,12 +7,12 @@ setlocal
 for /f "tokens=1-4 delims=:.," %%a in ("%TIME%") do set timestamp=%%a-%%b-%%c.%%d
 for /f "tokens=1-3 delims=/ " %%a in ("%DATE%") do set date=%%a/%%b/%%c
 
-:: 获取当前星期几
-for /f "tokens=1-2" %%a in ('wmic path Win32_LocalTime get DayOfWeek /value') do set weekday=%%b
+REM 获取当前星期几
+for /f "tokens=2 delims==" %%a in ('wmic path Win32_LocalTime get DayOfWeek /value') do set weekday=%%a
 
-:: 转换星期几的数字到中文名
+REM 转换星期几的数字到中文名
 set "weekdays=星期日 星期一 星期二 星期三 星期四 星期五 星期六"
-for /f "tokens=%weekday%" %%a in ("%weekdays%") do set weekday_name=%%a
+for /f "tokens=%weekday% delims= " %%a in ("%weekdays%") do set weekday_name=%%a
 
 :: 拼接日期和时间戳
 set datetime=%date%_%weekday_name%__%TIME:~0,2%-%TIME:~3,2%-%TIME:~6,2%.%TIME:~9,2%
