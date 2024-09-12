@@ -32,6 +32,7 @@ draft: false
 
 ```bash
 # sudo pacman -S python-<package_name> [python-<package_name>]
+# 温馨提示：有的库没法安装是因为Arch里边没有而已，整个pip并用pip安装即可
 sudo pacman -S python-gmpy2 python-pycryptodome python-pwntools python-tqdm
 ```
 
