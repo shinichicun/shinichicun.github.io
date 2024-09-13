@@ -18,6 +18,8 @@ draft: false
 
 这个有教程：[Windows 安装 SageMath 最新版 (WSL2)](https://zhuanlan.zhihu.com/p/633782050)
 
+还有个教程，但感觉不是很推荐（感觉有些奇奇怪怪的问题，不过里边还是有些可取的东西的）：[从零开始，WSL2+ArchLinux极简系统安装 - 哔哩哔哩 (bilibili.com)](https://www.bilibili.com/read/cv17164011/)
+
 > 可能遇到的报错及解决办法：
 >
 > 1，0x80370102报错：[WSL2安装Linux子系统报0x80370102解决方法](https://zhuanlan.zhihu.com/p/391422861)
