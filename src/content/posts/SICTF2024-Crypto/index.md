@@ -14,6 +14,8 @@ draft: false
 
 ![img](./assets/1708275028187-7621deda-e37e-43f9-9d37-7c767e5159d6-17136935054262.png)
 
+---
+
 ## 签到，确信！
 
 在[小鸡块博客](https://tangcuxiaojikuai.xyz/post/6144f326.html#more)里找到了解法。。。。
@@ -48,6 +50,8 @@ print(long_to_bytes(int(m)))
 ```
 
 </details>
+
+---
 
 
 ## gggcccddd
@@ -127,6 +131,8 @@ print(flag)
 
 ![img](./assets/1708276277427-f38f0b35-b807-4afe-8301-67e0f11dac8a-171137001352031.png)
 
+---
+
 ## 铜匠
 
 这题的话，因为我之前有见过类似题目名字，所以一打开脚本就直接看一下能不能copper
@@ -180,6 +186,8 @@ if p:
 
 ![img](./assets/1708310172200-c634c8c9-f7f4-4d90-a735-1571e8d96297-171137001352033.png)
 
+---
+
 ## easyLattice（二血）
 
 没啥好说，就是一个简单的格：
@@ -190,29 +198,23 @@ if p:
 
 <details>
     <summary><b>exp（点击展开）</b></summary>
+
 ```python
 from Crypto.Util.number import *
-```python
-h = 9848463356094730516607732957888686710609147955724620108704251779566910519170690198684628685762596232124613115691882688827918489297122319416081019121038443
-p = 11403618200995593428747663693860532026261161211931726381922677499906885834766955987247477478421850280928508004160386000301268285541073474589048412962888947     
-L = Matrix(ZZ, [[1, h*2**256],
-                [0, p*2**256]])
-```python
-from Crypto.Util.number import *
-```python
 h = 9848463356094730516607732957888686710609147955724620108704251779566910519170690198684628685762596232124613115691882688827918489297122319416081019121038443
 p = 11403618200995593428747663693860532026261161211931726381922677499906885834766955987247477478421850280928508004160386000301268285541073474589048412962888947     
 L = Matrix(ZZ, [[1, h*2**256],
                 [0, p*2**256]])
 m = abs(L.LLL()[0][0])
 # print(m)
-
 print(long_to_bytes(int(m)))
 
 # SICTF{e3fea01c-18f3-4638-9544-9201393940a9}A\xf0\x89\x84
 ```
 
 </details>
+
+---
 
 ## [进阶]2024_New_Setback（复现）
 
@@ -483,6 +485,8 @@ print(long_to_bytes(m2))
 
 </details>
 
+---
+
 ## SuperbRSA
 
 没啥好说，就是个e1和e2不互素
@@ -508,6 +512,8 @@ print(long_to_bytes(iroot(Integer(m), 3)[0]))
 
 # SICTF{S0_Great_RSA_Have_Y0u_Learned?}
 ```
+
+---
 
 ## Baby_RSA (复现)
 
@@ -552,8 +558,7 @@ print(long_to_bytes(iroot(Integer(m), 3)[0]))
 
 <details>
     <summary><b>Polynomial（点击展开）</b></summary>
-```python
-# sage
+
 ```python
 # sage
 """
@@ -565,7 +570,6 @@ c, 最后用groebner_basis就行
 （但就是这方法挺麻烦的）
 """
 # 定义我们用到的域
-
 PR.<a, b, x> = GF(p)[]
 
 # 需要用到的多项式组
@@ -740,7 +744,7 @@ print(long_to_bytes(int((f-flag).roots()[0][0])))
 
 </details>
 
-<hr style="border: 0.5px solid black;"/>
+---
 
 ## [进阶]easy_or_baby_RSA?（复现）
 
@@ -844,6 +848,8 @@ print(long_to_bytes(ZZ(pow(c,d,p1*q1))))
 ```
 
 </details>
+
+---
 
 ## 结语
 
