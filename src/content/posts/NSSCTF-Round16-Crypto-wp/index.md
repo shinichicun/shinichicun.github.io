@@ -4,7 +4,7 @@ published: 2024-01-13
 description: '记录一下当时的做题记录'
 image: ''
 tags: [Crypto]
-category: '比赛记录+复现'
+category: '比赛记录、复现'
 draft: false 
 ---
 
