@@ -80,7 +80,7 @@
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="http://www.miaoaixuan.cn/">
-                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCVrP.jpg">
+                <img class="ava" src="http://www.miaoaixuan.cn/images/avatar.jpg">
                 <div class="card-header">
                     <div>泠鹇</div>
                     <div class="info">HnuSec最帅的misc✌</div>
