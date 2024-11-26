@@ -10,7 +10,7 @@ draft: false
 
 这次Round是密码专项赛，共5道题，做出了2道；剩的3道是鸡块师傅出的（鸡块师傅tql）
 
-<img src="./assets/jiye.jpg" alt="jiye" style="zoom: 33%;" />
+![jiye](assets/jiye(1).jpg)
 
 ## 1，bestkasscn的超级简单密码
 
