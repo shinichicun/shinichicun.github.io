@@ -76,14 +76,14 @@
                 <img class="ava" src="https://p.sda1.dev/17/d03628f99ad34c0518163faca50c680a/O7eqKP.jpg">
                 <div class="card-header">
                     <div>Boogipop</div>
-                    <div class="info">HnuSec最帅的Web✌(21届队长)</div>
+                    <div class="info">HnuSec最帅的Web✌(24届队长)</div>
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="https://airkqx.github.io/">
                 <img class="ava" src="https://p.sda1.dev/17/9a8c6ed91fa6f4cf13110dead02002c6/b_1f213820ba2b194d6a9213834b28fc08.jpg">
                 <div class="card-header">
                     <div>Air</div>
-                    <div class="info">HnuSec同样帅的Web✌(20届队长)</div>
+                    <div class="info">HnuSec同样帅的Web✌(23届队长)</div>
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="https://natro92.fun/">
@@ -333,4 +333,3 @@
        </div>
     </div>
  </div>
-
