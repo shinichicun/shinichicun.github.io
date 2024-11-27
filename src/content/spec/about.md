@@ -5,7 +5,7 @@
 >
 > **博客地址：** https://shinichicun.top/
 >
-> **头像地址：** https://ooo.0x0.ooo/2023/12/20/OKzC7r.jpg
+> **头像地址：** https://shinichicun.top/avatar.png
 
 ## About Me：
 
