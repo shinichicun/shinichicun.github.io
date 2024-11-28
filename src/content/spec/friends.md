@@ -260,6 +260,13 @@
                     <div class="info">NK的RE✌</div>
                 </div>
             </a>
+            <a class="card" target="_blank" rel="noopener" href="https://blog.shenghuo2.top/">
+                <img class="ava" src="https://blog.shenghuo2.top/images/avatar.png">
+                <div class="card-header">
+                    <div>shenghuo2</div>
+                    <div class="info">NK的✌</div>
+                </div>
+            </a>
             <a class="card" target="_blank" rel="noopener" href="https://dexterjie.github.io/">
                 <img class="ava" src="https://dexterjie.github.io/images/0.jpg">
                 <div class="card-header">
@@ -320,7 +327,7 @@
                 <img class="ava" src="https://ooo.0x0.ooo/2023/12/20/OKh5ht.jpg">
                 <div class="card-header">
                     <div>N1gh7ma12e</div>
-                    <div class="info">哈理密码手</div>
+                    <div class="info">哈理工密码手</div>
                 </div>
            </a>
            <a class="card" target="_blank" rel="noopener" href="https://blog.arkeysec.site/">
@@ -333,3 +340,4 @@
        </div>
     </div>
  </div>
+
