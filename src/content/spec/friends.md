@@ -73,7 +73,7 @@
        <div class="links-content">
           <div class="link-navigation">
             <a class="card" target="_blank" href="https://boogipop.com/" rel="noopener">
-                <img class="ava" src="https://p.sda1.dev/17/d03628f99ad34c0518163faca50c680a/O7eqKP.jpg">
+                <img class="ava" src="https://ooo.0x0.ooo/2024/09/09/OtCYQb.jpg">
                 <div class="card-header">
                     <div>Boogipop</div>
                     <div class="info">HnuSec最帅的Web✌(24届队长)</div>
@@ -94,7 +94,7 @@
                 </div>
             </a>
             <a class="card" target="_blank" rel="noopener" href="http://www.miaoaixuan.cn/">
-                <img class="ava" src="https://p.sda1.dev/17/ec65411fffde2ad1d432fa782cf08c63/avatar.jpg">
+                <img class="ava" src="http://www.miaoaixuan.cn/images/avatar.jpg">
                 <div class="card-header">
                     <div>泠鹇</div>
                     <div class="info">HnuSec最帅的Misc✌</div>
@@ -160,6 +160,7 @@
        </div>
     </div>
  </div>
+
 
 # ☄Other Friends
 
@@ -340,4 +341,3 @@
        </div>
     </div>
  </div>
-
