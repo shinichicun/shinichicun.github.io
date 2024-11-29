@@ -16,8 +16,8 @@ export const siteConfig: SiteConfig = {
   },
   banner: {
     enable: true,
-    src: 'https://ooo.0x0.ooo/2024/09/08/OtCLiM.png',   // Relative to the /src directory. Relative to the /public directory if it starts with '/'
-    position: 'top', // Equivalent to object-position, defaults center
+    src: '/background.jpg',   // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+    position: 'center', // Equivalent to object-position, defaults center
     credit: {
       enable: false,         // Display the credit text of the banner image
       text: '',              // Credit text to be displayed

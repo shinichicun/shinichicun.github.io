@@ -1,4 +1,10 @@
 # About
+## 图片来源：
+
+> 背景：[#魅惑のふともも 无题 - 鸦居的插画 - pixiv](https://www.pixiv.net/artworks/122688417)
+>
+> 头像：[AI繪圖(aiart) 流螢 崩坏：星穹铁道 | HoYoLAB](https://www.hoyolab.com/article/34973913)
+
 ## 友链信息：
 
 > **名称：** Shin
