@@ -1,0 +1,32 @@
+---
+
+import { profileConfig } from '../config'
+import { url } from '../utils/url-utils'
+import { Icon } from "astro-icon/components";
+import GameIconsSwordAltar from './GameIconsSwordAltar.astro'
+const currentYear = new Date().getFullYear()
+---
+
+<div class="card-base max-w-[var(--page-width)] min-h-[4.5rem] rounded-b mx-auto px-4 pt-4 pb-4">
+    <div class="text-50 text-sm">
+        <div>
+            &copy; <span id="copyright-year">{currentYear}</span> {profileConfig.name}. All Rights Reserved.
+        </div>
+        <div class="flex gap-2 mt-0.5">
+            <a class="link text-[var(--primary)] font-medium inline-flex items-center" target="_blank" href={url('rss.xml')}>
+                <Icon name="material-symbols:rss-feed" class="mr-0.2" />RSS
+            </a>
+            <span class="mx-1">|</span>
+            <a class="link text-[var(--primary)] font-medium inline-flex items-center" target="_blank" href={url('sitemap-index.xml')}>
+                <Icon name="material-symbols:map-outline" class="mr-0.2" />Site Map
+            </a>
+        </div>
+        <div class="flex gap-1 mt-0.5">
+            Powered by 
+            <a class="link text-[var(--primary)] font-medium inline-flex items-center" target="_blank" href="https://astro.build"><Icon name="simple-icons:astro" class="mr-0.2" />Astro</a>. 
+            Theme by 
+            <a class="link text-[var(--primary)] font-medium inline-flex items-center" target="_blank" href="https://fuwari.vercel.app/"><Icon name="emojione-monotone:fish-cake-with-swirl" class="mr-0.5 ml-0.5" />Fuwari</a>. 
+        </div>
+    </div>
+    <GameIconsSwordAltar class="text-[var(--primary)] absolute right-4 top-1/2 transform -translate-y-1/2 w-16 h-16" />
+</div>

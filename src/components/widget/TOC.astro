@@ -1,0 +1,83 @@
+---
+import WidgetLayout from './WidgetLayout.astro'
+import { i18n } from '@i18n/translation'
+import I18nKey from '@i18n/i18nKey'
+import type { MarkdownHeading } from 'astro'
+
+interface Props {
+    headings: MarkdownHeading[]
+    class?: string
+    style?: string
+}
+
+const { headings, class: className, style } = Astro.props
+const minDepth = Math.min(...headings.map((h) => h.depth))
+const maxLevel = 3
+
+function removeTailingHash(text: string) {
+    return text.replace(/#*$/, '')
+}
+---
+<WidgetLayout name={i18n(I18nKey.toc)} id="toc" class={className} style={style}>
+    <div class="flex flex-col">
+        {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) => (
+            <a href={`#${heading.slug}`} 
+               data-heading-link={heading.slug}
+               class="flex px-3 py-2 pl-2 rounded-lg transition-all text-neutral-700 dark:text-neutral-300 ">
+                <div class:list={["hover:text-[var(--primary)] dark:hover:text-[var(--primary)] truncate", {
+                    "ml-0": heading.depth === minDepth,
+                    "ml-4": heading.depth === minDepth + 1,
+                    "ml-8": heading.depth === minDepth + 2
+                }]}>
+                    {removeTailingHash(heading.text)}
+                </div>
+            </a>
+        ))}
+    </div>
+</WidgetLayout>
+
+<style>
+[data-heading-link].active {
+    @apply text-[var(--primary)] font-bold pl-3 relative;
+}
+
+[data-heading-link].active::before {
+    content: '';
+    @apply absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-4 bg-[var(--primary)] rounded-md transition;
+}
+</style>
+
+<script>
+function updateTocHighlight() {
+    const headings = Array.from(document.querySelectorAll('h1[id], h2[id], h3[id]'));
+    const tocLinks = document.querySelectorAll('[data-heading-link]');
+    
+    const scrollPos = window.scrollY;
+    const currentHeading = headings.reduce((current, heading) => {
+        const headingTop = heading.getBoundingClientRect().top + scrollPos - 100;
+        return scrollPos >= headingTop ? heading : current;
+    }, headings[0]);
+
+    tocLinks.forEach(link => {
+        link.classList.toggle('active', currentHeading?.id === link.getAttribute('data-heading-link'));
+    });
+}
+
+// 使用防抖优化滚动事件
+let scrollTimeout: number;
+window.addEventListener('scroll', () => {
+    if (scrollTimeout) window.cancelAnimationFrame(scrollTimeout);
+    scrollTimeout = window.requestAnimationFrame(updateTocHighlight);
+});
+
+document.addEventListener('DOMContentLoaded', updateTocHighlight);
+
+document.querySelectorAll('[data-heading-link]').forEach(link => {
+    link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const headingId = link.getAttribute('data-heading-link');
+        document.getElementById(headingId!)?.scrollIntoView({ behavior: 'smooth' });
+        history.pushState(null, '', `#${headingId}`);
+    });
+});
+</script>
