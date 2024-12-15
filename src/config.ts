@@ -5,6 +5,7 @@ import type {
   SiteConfig,
 } from './types/config'
 import { LinkPreset } from './types/config'
+import type { GiscusProps } from "@giscus/svelte";
 
 export const siteConfig: SiteConfig = {
   title: 'Shin\'s Blog',
@@ -85,3 +86,16 @@ export const licenseConfig: LicenseConfig = {
   name: 'CC BY-NC-SA 4.0',
   url: 'https://creativecommons.org/licenses/by-nc-sa/4.0/',
 }
+
+export const GISCUS: GiscusProps = {
+  repo: "shinichicun/shinichicun.github.io",
+  repoId: "R_kgDONdyaHg",
+  category: "General",
+  categoryId: "DIC_kwDONdyaHs4ClPPY",
+  mapping: "title",
+  reactionsEnabled: "0",
+  emitMetadata: "1",
+  inputPosition: "top",
+  lang: "zh-CN",
+  loading: "lazy",
+};
