@@ -93,8 +93,8 @@
                     <div class="info">HnuSec的Web✌</div>
                 </div>
             </a>
-            <a class="card" target="_blank" rel="noopener" href="http://www.miaoaixuan.cn/">
-                <img class="ava" src="http://www.miaoaixuan.cn/images/avatar.jpg">
+            <a class="card" target="_blank" rel="noopener" href="http://blog.miaoaixuan.cn/">
+                <img class="ava" src="http://blog.miaoaixuan.cn/images/avatar.jpg">
                 <div class="card-header">
                     <div>泠鹇</div>
                     <div class="info">HnuSec最帅的Misc✌</div>
@@ -160,7 +160,6 @@
        </div>
     </div>
  </div>
-
 
 # ☄Other Friends
 
@@ -268,6 +267,13 @@
                     <div class="info">NK的✌</div>
                 </div>
             </a>
+            <a class="card" target="_blank" rel="noopener" href="https://www.cnblogs.com/cainyzb">
+                <img class="ava" src="https://s21.ax1x.com/2024/04/09/pFOP6HS.png">
+                <div class="card-header">
+                    <div>Cain</div>
+                    <div class="info">NK的✌</div>
+                </div>
+            </a>
             <a class="card" target="_blank" rel="noopener" href="https://dexterjie.github.io/">
                 <img class="ava" src="https://dexterjie.github.io/images/0.jpg">
                 <div class="card-header">
@@ -329,13 +335,6 @@
                 <div class="card-header">
                     <div>N1gh7ma12e</div>
                     <div class="info">哈理工密码手</div>
-                </div>
-           </a>
-           <a class="card" target="_blank" rel="noopener" href="https://blog.arkeysec.site/">
-                <img class="ava" src="https://p.sda1.dev/17/3d198fa783308e005030ff42eb17d7c0/avatar1.jpg">
-                <div class="card-header">
-                    <div>arkeysec</div>
-                    <div class="info">arkeysec</div>
                 </div>
            </a>
        </div>

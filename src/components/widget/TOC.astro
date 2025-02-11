@@ -17,28 +17,9 @@ let heading1Count = 1;
 function removeTailingHash(text: string) {
     return text.replace(/#*$/, '')
 }
-/*
-<WidgetLayout name={i18n(I18nKey.toc)} id="toc" class={className} style={style}>
-    <div class="flex flex-col">
-        {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) => (
-            <a href={`#${heading.slug}`} 
-               data-heading-link={heading.slug}
-               class="flex px-3 py-2 pl-2 rounded-lg transition-all text-neutral-700 dark:text-neutral-300 ">
-                <div class:list={["hover:text-[var(--primary)] dark:hover:text-[var(--primary)] truncate", {
-                    "ml-0": heading.depth === minDepth,
-                    "ml-4": heading.depth === minDepth + 1,
-                    "ml-8": heading.depth === minDepth + 2
-                }]}>
-                    {removeTailingHash(heading.text)}
-                </div>
-            </a>
-        ))}
-    </div>
-</WidgetLayout>
- */
 ---
 <WidgetLayout name={i18n(I18nKey.toc)} id="toc" class={className} style={style}>
-    <div class="flex flex-col">
+    <div class="flex flex-col overflow-y-scroll max-h-[300px]"> <!-- 添加滚动条 -->
         {headings.filter((heading) => heading.depth < minDepth + maxLevel).map((heading) =>
                 <a href={`#${heading.slug}`} class="px-2 flex gap-2 relative transition w-full min-h-9 rounded-xl
             hover:bg-[var(--toc-btn-hover)] active:bg-[var(--toc-btn-active)] py-2
@@ -49,8 +30,7 @@ function removeTailingHash(text: string) {
                             "ml-4": heading.depth == minDepth + 1,
                             "ml-8": heading.depth == minDepth + 2,
                         }
-                    ]}
-                    >
+                    ]}>
                         {heading.depth == minDepth && heading1Count++}
                         {heading.depth == minDepth + 1 && <div class="w-2 h-2 rounded-[0.1875rem] bg-[var(--toc-badge-bg)]"></div>}
                         {heading.depth == minDepth + 2 && <div class="w-1.5 h-1.5 rounded-sm bg-black/5 dark:bg-white/10"></div>}
