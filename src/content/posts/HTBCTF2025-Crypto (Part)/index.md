@@ -265,6 +265,9 @@ def join_channel(self, args):
 其中有一个判断语句引起了我的注意：
 
 ```python
+channel = channel[1:]
+requires_key = CHANNELS[channel]['requires_key']
+channel_key = CHANNELS[channel]['key']
 if (not key and requires_key) or (channel_key and key != channel_key):
     err(f':{self.host} 475 guest {channel} :Cannot join channel (+k) - bad key')
     return
