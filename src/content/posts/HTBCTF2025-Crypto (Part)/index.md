@@ -283,13 +283,19 @@ if (not key and requires_key) or (channel_key and key != channel_key):
 
 然后发现前三句好像有一部分是相同的，最后三句也是（之后解的时候才发现其实是join_channel函数里的"**!nick** "(**k后面有一个空格**)和"**!leave**"）；前三句的其余部分又刚好跟说话的人的名字长度一一对应，所以就能得到一部分的K。
 
-因为我当时并不知道有啥自动的解法，所以我就干脆直接纯手动——**根据已知部分去拼接猜测前或者后的单词**XD（只能说十分难绷）
+因为我当时并不知道有啥自动的解法，所以我就干脆直接纯手动——**根据已知部分去拼接猜测前或者后的单词**XD（只能说十分难绷），通过自己的英文水平+GPT来猜已知信息的前后字母所对应的单词（这个还是有个判断标准的：如果猜对的话，对话的其他部分肯定也解出来**可打印字符**）
+
+然后就能在里边找到secret频道的key：**%mi2gvHHCV5f_kcb=Z4vULqoYJ&oR**
+
+接着就还是同样的方法，去secret里边得到一个预设对话，最后就找到了flag：**HTB{Crib_Dragging_Exploitation_With_Key_Nonce_Reuse!}**
+
+(前面能这样做是因为：从general那得到我手动得到的key后，我就重新试了一遍，发现secret频道的key是固定的，所以就发现flag是静态的了XD)
 
 ---
 
 ## EXP
 
-我这里放一下分别放一下general和secret最后的记录 (从general那得到我手动得到的key后，我就重新试了一遍，发现secret频道的key是固定的，所以flag也就发现是静态的了XD) ：
+我这里放一下分别放一下general和secret最后的记录：
 
 <details>
     <summary><b>点击展开代码</b></summary>
