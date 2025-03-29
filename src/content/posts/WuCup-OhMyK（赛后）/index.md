@@ -13,9 +13,11 @@ lang: ''
 
 虽然此题放在了密码方向，但从整个做题过程来看，其实是一道RE题（）
 
-不过嘛，虽然对我来说，我自己会觉得比较shi；但还是可以做的，主要还是自己赛后做的时候比较死板了。。。这次记录只是我给自己的一个警示吧
+不过嘛，虽然对我来说，我自己会觉得比较shi；但还是可以做的，主要还是自己赛后做的时候比较死板了)))
 
-**（以上评价仅个人观点，可忽略不计）**
+这次记录就算作是给我自己的一个警示吧
+
+**（以上评价仅个人观点，请忽略）**
 
 ## 做题过程
 
@@ -47,7 +49,7 @@ lang: ''
 
 ### 分析M.java，获取了些常量
 
-接下来就是分析这三个.java文件了，但其实主要看M.java就行（其他两个可以理解成**自定义的Java类**），我这里贴下M.java的代码吧：
+接下来就是分析这三个java代码了，但我们其实主要看M.java就行（其他两个定义了些会用到的**Java类**），我这里贴下M.java的代码吧：
 
 <details>
     <summary><b>M.java (点击展开)</b></summary>
@@ -245,38 +247,40 @@ public class M extends Activity implements TextWatcher, View.OnClickListener {
 
 ```java
 public final void onCreate(Bundle bundle) {
-        super.onCreate(bundle);
+    super.onCreate(bundle);
+    try {
+        ObjectInputStream objectInputStream = new ObjectInputStream(new InflaterInputStream(getAssets().open("a")));
         try {
-            ObjectInputStream objectInputStream = new ObjectInputStream(new InflaterInputStream(getAssets().open("a")));
+            j = MessageDigest.getInstance("SHA256");
+            this.e = (BigInteger) objectInputStream.readObject();
+            this.f = (BigInteger) objectInputStream.readObject();
+            this.g = (BigInteger) objectInputStream.readObject();
+            this.h = (BigInteger) objectInputStream.readObject();
+            this.a = (List) objectInputStream.readObject();
+            objectInputStream.close();
+            setContentView(R.layout.m);
+            EditText editText = (EditText) findViewById(R.id.i);
+            this.b = editText;
+            editText.addTextChangedListener(this);
+            EditText editText2 = (EditText) findViewById(R.id.v);
+            this.c = editText2;
+            editText2.addTextChangedListener(this);
+            this.d = (CheckBox) findViewById(R.id.c);
+            findViewById(R.id.b).setOnClickListener(this);
+        } catch (Throwable th) {
             try {
-                j = MessageDigest.getInstance("SHA256");
-                this.e = (BigInteger) objectInputStream.readObject();
-                this.f = (BigInteger) objectInputStream.readObject();
-                this.g = (BigInteger) objectInputStream.readObject();
-                this.h = (BigInteger) objectInputStream.readObject();
-                this.a = (List) objectInputStream.readObject();
                 objectInputStream.close();
-                setContentView(R.layout.m);
-                EditText editText = (EditText) findViewById(R.id.i);
-                this.b = editText;
-                editText.addTextChangedListener(this);
-                EditText editText2 = (EditText) findViewById(R.id.v);
-                this.c = editText2;
-                editText2.addTextChangedListener(this);
-                this.d = (CheckBox) findViewById(R.id.c);
-                findViewById(R.id.b).setOnClickListener(this);
-            } catch (Throwable th) {
-                try {
-                    objectInputStream.close();
-                } catch (Throwable th2) {
-                    th.addSuppressed(th2);
-                }
-                throw th;
             }
-        } catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
+            catch (Throwable th2) {
+                th.addSuppressed(th2);
+            }
+            throw th;
         }
     }
+    catch (IOException | ClassNotFoundException | NoSuchAlgorithmException e) {
+        throw new RuntimeException(e);
+    }
+}
 ```
 
 </details>
@@ -339,28 +343,45 @@ public class Main {
 
 ### 继续分析，发现存在DSA的k复用
 
-然后我们看下别的函数，主要注意到了afterTextChanged这个函数，里边有用到了刚刚获取的部分变量，接着便是关键部分——**b函数**了（我没骂人，真就**b函数**）：
+然后我们看下别的函数，就会注意到**afterTextChanged**这个函数：
 
 ```java
-public static boolean b(byte[] bArr, String str, BigInteger bigInteger, BigInteger bigInteger2,
-            BigInteger bigInteger3, BigInteger bigInteger4) {
-        BigInteger a = a(str.substring(0, 40));
-        BigInteger a2 = a(str.substring(40, 80));
-        byte[] copyOfRange = Arrays.copyOfRange(j.digest(bArr), 0, 20);
-        StringBuilder sb = new StringBuilder();
-        for (byte b : copyOfRange) {
-            String hexString = Integer.toHexString(b & 255);
-            if (hexString.length() == 1) {
-                hexString = "0".concat(hexString);
-            }
-            sb.append(hexString);
-        }
-        BigInteger bigInteger5 = new BigInteger(sb.toString(), 16);
-        BigInteger modPow = a2.modPow(bigInteger2.subtract(BigInteger.valueOf(2L)), bigInteger2);
-        return bigInteger3.modPow(bigInteger5.multiply(modPow).mod(bigInteger2), bigInteger)
-                .multiply(bigInteger4.modPow(a.multiply(modPow).mod(bigInteger2), bigInteger)).mod(bigInteger)
-                .mod(bigInteger2).equals(a);
+public final void afterTextChanged(Editable editable) {
+    this.d.setChecked(!r8.isChecked());
+    this.d.setChecked(false);
+    String obj = this.c.getText().toString();
+    if (obj.length() != 80) {
+        return;
     }
+    try {
+        this.d.setChecked(b(this.b.getText().toString().getBytes(StandardCharsets.UTF_8), obj, this.e, this.f, this.g, this.h));
+    } catch (Exception unused) {
+        this.d.setChecked(false);
+    }
+}
+```
+
+
+
+里边有用到了刚刚获取的**e、f、g、h**，接着便是关键部分——**b函数**了（我没骂人，真就叫**b函数**）：
+
+```java
+public static boolean b(byte[] bArr, String str, BigInteger bigInteger, BigInteger bigInteger2, BigInteger bigInteger3, BigInteger bigInteger4) {
+    BigInteger a = a(str.substring(0, 40));
+    BigInteger a2 = a(str.substring(40, 80));
+    byte[] copyOfRange = Arrays.copyOfRange(j.digest(bArr), 0, 20);
+    StringBuilder sb = new StringBuilder();
+    for (byte b : copyOfRange) {
+        String hexString = Integer.toHexString(b & 255);
+        if (hexString.length() == 1) {
+            hexString = "0".concat(hexString);
+        }
+        sb.append(hexString);
+    }
+    BigInteger bigInteger5 = new BigInteger(sb.toString(), 16);
+    BigInteger modPow = a2.modPow(bigInteger2.subtract(BigInteger.valueOf(2L)), bigInteger2);
+    return bigInteger3.modPow(bigInteger5.multiply(modPow).mod(bigInteger2), bigInteger).multiply(bigInteger4.modPow(a.multiply(modPow).mod(bigInteger2), bigInteger)).mod(bigInteger).mod(bigInteger2).equals(a);
+}
 ```
 
 虽然对于我这个只会python的人而言看着挺高大上，但看最后几行会发现——最后是DSA的验签操作（只是嘛。。。感觉出题人是不是公式写错了？）
@@ -378,29 +399,33 @@ BigInteger a = a(str.substring(0, 40));
 BigInteger a2 = a(str.substring(40, 80));
 ```
 
-因为当时题目没人解，所以当时还给了一堆hint，其中就有两条：**OhMyK-sixT6ZZyVa**和**OhMyK-X5V1kiEt87**；看对应的值就发现**这两组的r一致**，而我们知道DSA是这样签名的：
+因为当时题目没人解，所以当时还给了一堆hint，其中就有两条：**OhMyK-sixT6ZZyVa**和**OhMyK-X5V1kiEt87**；这时候去a列表里看对应的值就会发现——**这两组的r一致**，而我们知道DSA是这样签名的：
 $$
 \begin{split}
 r&=g^k\ mod\ q
 \\s&=k^{-1}(H(m)+xr)\ mod\ q
 \end{split}
 $$
-所以很明显——就是k复用了，再加上题目还有个提示：**提交x即可**，就能知道是求上式的**x**了。
+所以很明显——考点就是**DAS的k复用问题**了，再加上题目还有个提示：**提交x即可**，就能知道本题是让我们求上式的**x**。
 
 于是有如下推导：
+
+
 $$
 \begin{split}
-&\begin{cases}
-	s_1=k^{-1}(H(m_1)+xr)\ mod\ q\\
-	s_2=k^{-1}(H(m_2)+xr)\ mod\ q
-\end{cases}\\
-&\Rightarrow{s_1}^{-1}(H(m_1)+xr)\equiv {s_2}^{-1}(H(m_2)+xr)\\
+&\boxed{
+\begin{aligned}
+s_1 &= k^{-1}(H(m_1) + xr) \mod q \\
+s_2 &= k^{-1}(H(m_2) + xr) \mod q
+\end{aligned}
+}\\
+&\Rightarrow {s_1}^{-1}(H(m_1)+xr)\equiv {s_2}^{-1}(H(m_2)+xr)\ mod\ q\\
 &\Rightarrow x\equiv ({s_1}^{-1}H(m_1)-{s_2}^{-1}H(m_2)){({s_2}^{-1}r-{s_1}^{-1}r)}^{-1}\ mod\ q
 \end{split}
 $$
 最后把x转成16进制套个flag格式就行。
 
-不过就是——这里算之前需要**对r和s先经过a函数的处理**哈（如果将a函数转成其他编程语言的代码的话，需要注意一下数据类型）
+不过就是——这里算之前需要**对r和s先经过a函数的处理**哈（如果将a函数转成其他编程语言的代码的话，需要注意一下数据类型的问题）
 
 该部分的exp：
 
