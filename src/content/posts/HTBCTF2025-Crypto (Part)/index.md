@@ -443,7 +443,7 @@ len = 180
 
 ## 题目分析
 
-### 1，p的bit_length()
+### 1，bit_length() of p
 
 给的信息是：
 
@@ -455,7 +455,7 @@ p = 2121433434104758903495979583053016997230400096735589604111229719077097230666
 
 因为做的时候发现p是不变的，所以直接存下来，传**p.bit_length()**过去即可
 
-### 2，GF(p).order()的factor
+### 2，factor of GF(p).order()
 
 给的信息是：
 ```python
@@ -522,7 +522,7 @@ b = 8133402404274856939573884604662224089841681915139687661374894548183248327840
 
 最后照着[第二问](https://shinichicun.top/posts/htbctf2025-crypto-part/#2gfporder%E7%9A%84factor)的格式去提交即可。
 
-### 6，get d such that A=d*G holds
+### 6，get d of A=d*G
 
 给的信息：
 
