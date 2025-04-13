@@ -196,7 +196,7 @@ output = key.export_key(passphrase=passphrase).split(b'\n')
 
 翻一下export_key的源代码，发现加密的位置在这：
 
-!![image-20240519203812924](./assets/image-20240519203812924.png)
+![image-20240519203812924](./assets/image-20240519203812924.png)
 
 查看此处函数的源代码：
 
@@ -220,12 +220,7 @@ output = key.export_key(passphrase=passphrase).split(b'\n')
 
 <details>
     <summary><b>点击展开代码</b></summary>
-```python
-from binascii import a2b_base64, unhexlify
-from Crypto.Hash import MD5
-from Crypto.Cipher import DES3
-from Crypto.Protocol.KDF import PBKDF1
-import tqdm
+
 
 ```python
 from binascii import a2b_base64, unhexlify
@@ -386,7 +381,19 @@ print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.
 13903983817893117249931704406959869971132956255130487015289848690577655239262013033618370827749581909492660806312017
 """
 ```
-
+```python
+#!/usr/bin/python2
+# Python 2.7 (64-bit version)
+from secret import flag
+import os, binascii, hashlib
+key = os.urandom(7)
+print hash(key)
+print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.hexlify(flag), 16)
+"""
+7457312583301101235
+13903983817893117249931704406959869971132956255130487015289848690577655239262013033618370827749581909492660806312017
+"""
+```
 </details>
 
 ### 1，MITM
@@ -398,38 +405,38 @@ print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.
 
  ```python
 def shash(value):
-        """
-        Returns a Python 2.7 hash for a string.
+    """
+    Returns a Python 2.7 hash for a string.
 
-        Logic ported from the 2.7 Python branch: cpython/Objects/stringobject.c
-        Method: static long string_hash(PyStringObject *a)
+    Logic ported from the 2.7 Python branch: cpython/Objects/stringobject.c
+    Method: static long string_hash(PyStringObject *a)
 
-        Args:
-            value: input string
+    Args:
+        value: input string
 
-        Returns:
-            Python 2.7 hash
-        """
+    Returns:
+        Python 2.7 hash
+    """
 
-        length = len(value)
+    length = len(value)
 
-        if length == 0:
-            return 0
+    if length == 0:
+        return 0
 
-        mask = 0xffffffffffffffff
-        x = (Hash.ordinal(value[0]) << 7) & mask
-        for c in value:
-            x = (1000003 * x) & mask ^ Hash.ordinal(c)
+    mask = 0xffffffffffffffff
+    x = (Hash.ordinal(value[0]) << 7) & mask
+    for c in value:
+        x = (1000003 * x) & mask ^ Hash.ordinal(c)
 
-        x ^= length & mask
+    x ^= length & mask
 
-        # Convert to C long type
-        x = ctypes.c_long(x).value
+    # Convert to C long type
+    x = ctypes.c_long(x).value
 
-        if x == -1:
-            x = -2
+    if x == -1:
+        x = -2
 
-        return x
+    return x
 
  ```
 

@@ -368,7 +368,7 @@ print("j1 =",j1)
 
 于是就卡住了（）
 
-后来看wp才发现：**[modular polynomial](https://math.mit.edu/~drew/ClassicalModPolys.html)**是一个相邻的同源ECC之间的关系，而且一查就有（
+后来看wp才发现：[modular polynomial](https://math.mit.edu/~drew/ClassicalModPolys.html)是一个相邻的同源ECC之间的关系，而且一查就有（
 
 ![./image-20240317141739848](assets/image-20240317141739848.png)
 

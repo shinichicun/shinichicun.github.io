@@ -26,7 +26,16 @@ def genprime():
         r = random.randint(2**211,2**212)
         if isPrime(o*r+1):
             return o, o*r+1
-
+```python
+from flag import flag
+import random
+from Crypto.Util.number import *
+def genprime():
+    o = getPrime(300)
+    while True:
+        r = random.randint(2**211,2**212)
+        if isPrime(o*r+1):
+            return o, o*r+1
 o1, p = genprime()
 o2, q = genprime()
 n=p*q
@@ -47,10 +56,10 @@ n=444354254477821148388976376477334096148311210890647255264132477016311225236466
 c=41355409695119524180275572228024314281790321005050664347253778436753663918879919757571129194249071204946415158483084730406579433518426895158142068246063333111438863836668823874266012696265984976829088976346775293102571794377818611709336242495598331872036489022428750111592728015245733975923531682859930386731
 a=39844923600973712577104437232871220768052114284995840460375902596405104689968610170336151307934820030811039502338683925817667771016288030594299464019664781911131177394369348831163266849069740191783143327911986419528382896919157135487360024877230254274474109707112110411601273850406237677432935818199348150470
 o=1745108106200960949680880500144134006212310627077303652648249235148621661187609612344828833696608872318217367008018829485062303972702933973340909520462917612611270028511222134076453
-
 ```
 
 </details>
+
 
 **解答：**
 
@@ -75,8 +84,6 @@ $$
 
 <details>
     <summary>exp (点击展开)</summary>
-
-
 ```python
 from Crypto.Util.number import *
 from gmpy2 import *
@@ -113,8 +120,6 @@ $$
 
 <details>
     <summary>exp1 (点击展开)</summary>
-
-
 ```python
 from Crypto.Util.number import *
 from gmpy2 import *
@@ -161,14 +166,24 @@ flag += (16 - len(flag) % 16) * b'\x00'
 iv = os.urandom(16)
 aes = AES.new(key,AES.MODE_CBC,iv)
 enc_flag = aes.encrypt(flag)
-
-print(n)
+```python
+import os
+from secrets import flag
+from Crypto.Util.number import *
+from Crypto.Cipher import AES
+m = 88007513702424243702066490849596817304827839547007641526433597788800212065249
+key = os.urandom(24)
+key = bytes_to_long(key)
+n = m % key
+flag += (16 - len(flag) % 16) * b'\x00'
+iv = os.urandom(16)
+aes = AES.new(key,AES.MODE_CBC,iv)
+enc_flag = aes.encrypt(flag)print(n)
 print(enc_flag)
 print(iv)
 #103560843006078708944833658339172896192389513625588
 #b'\xfc\x87\xcb\x8e\x9d\x1a\x17\x86\xd9~\x16)\xbfU\x98D\xfe\x8f\xde\x9c\xb0\xd1\x9e\xe7\xa7\xefiY\x95C\x14\x13C@j1\x9d\x08\xd9\xe7W>F2\x96cm\xeb'
 #b'UN\x1d\xe2r<\x1db\x00\xdb\x9a\x84\x1e\x82\xf0\x86'
-
 ```
 
 </details>
@@ -190,7 +205,11 @@ print(iv)
 n = 103560843006078708944833658339172896192389513625588
 c = b'\xfc\x87\xcb\x8e\x9d\x1a\x17\x86\xd9~\x16)\xbfU\x98D\xfe\x8f\xde\x9c\xb0\xd1\x9e\xe7\xa7\xefiY\x95C\x14\x13C@j1\x9d\x08\xd9\xe7W>F2\x96cm\xeb'
 iv = b'UN\x1d\xe2r<\x1db\x00\xdb\x9a\x84\x1e\x82\xf0\x86'
-
+```python
+# sage
+n = 103560843006078708944833658339172896192389513625588
+c = b'\xfc\x87\xcb\x8e\x9d\x1a\x17\x86\xd9~\x16)\xbfU\x98D\xfe\x8f\xde\x9c\xb0\xd1\x9e\xe7\xa7\xefiY\x95C\x14\x13C@j1\x9d\x08\xd9\xe7W>F2\x96cm\xeb'
+iv = b'UN\x1d\xe2r<\x1db\x00\xdb\x9a\x84\x1e\x82\xf0\x86'
 m = 88007513702424243702066490849596817304827839547007641526433597788800212065249
 key = m-n
 from Crypto.Util.number import *

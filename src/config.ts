@@ -21,7 +21,7 @@ export const siteConfig: SiteConfig = {
     position: 'center', // Equivalent to object-position, defaults center
     credit: {
       enable: false,         // Display the credit text of the banner image
-      text: '',              // Credit text to be displayed
+      text: 'Welcome to HnuSec thank you meow ~',              // Credit text to be displayed
       url: ''                // (Optional) URL link to the original artwork or artist's page
     }
   },
