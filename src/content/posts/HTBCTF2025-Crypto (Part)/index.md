@@ -289,7 +289,7 @@ if (not key and requires_key) or (channel_key and key != channel_key):
 
 接着就还是同样的方法，去secret里边得到一个预设对话，最后就找到了flag：**HTB{Crib_Dragging_Exploitation_With_Key_Nonce_Reuse!}**
 
-(前面能这样做是因为：从general那得到我手动得到的key后，我就重新试了一遍，发现secret频道的key是固定的，所以就发现flag是静态的了XD)
+(能这样做是因为：从general那得到我手动得到的key后，我就重新试了一遍，发现secret频道的key是固定的，所以就发现flag是静态的了XD)
 
 ---
 
