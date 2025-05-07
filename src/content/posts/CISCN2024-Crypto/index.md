@@ -355,6 +355,7 @@ b'flag{df4a4054-23eb-4ba4-be5e-15b247d7b819}'
 
 <details>
     <summary><b>点击展开代码</b></summary>
+
 ```python
 #!/usr/bin/python2
 # Python 2.7 (64-bit version)
@@ -368,32 +369,7 @@ print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.
 13903983817893117249931704406959869971132956255130487015289848690577655239262013033618370827749581909492660806312017
 """
 ```
-```python
-#!/usr/bin/python2
-# Python 2.7 (64-bit version)
-from secret import flag
-import os, binascii, hashlib
-key = os.urandom(7)
-print hash(key)
-print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.hexlify(flag), 16)
-"""
-7457312583301101235
-13903983817893117249931704406959869971132956255130487015289848690577655239262013033618370827749581909492660806312017
-"""
-```
-```python
-#!/usr/bin/python2
-# Python 2.7 (64-bit version)
-from secret import flag
-import os, binascii, hashlib
-key = os.urandom(7)
-print hash(key)
-print int(hashlib.sha384(binascii.hexlify(key)).hexdigest(), 16) ^ int(binascii.hexlify(flag), 16)
-"""
-7457312583301101235
-13903983817893117249931704406959869971132956255130487015289848690577655239262013033618370827749581909492660806312017
-"""
-```
+
 </details>
 
 ### 1，MITM
