@@ -1,9 +1,41 @@
 # About
-This is the demo site for [Fuwari](https://github.com/saicaca/fuwari).
+
+## 友链信息：
+
+> **名称：** Shin
+>
+> **博客地址：** https://shinichicun.top/
+>
+> **头像地址：** https://shinichicun.top/avatar.png
+
+## About Me：
+
+> - 海南大学本科在读
+>
+> - HnuSec Crypto方向
+>
+> - 考研或工作？也可能是别的（
+>
+> - 比赛坐牢是不可能的（bushi）
+
+## How to find me?
+
+```
+QQ: base64 MjM5MzE0MTUwMQ==
+```
+
+## 假如有师傅想互换友链的话，欢迎联系我~~
+
+<img src="https://ooo.0x0.ooo/2024/03/21/Ogesfb.jpg" alt="1685637181469" style="zoom:30%;" />
+
+## 博客主题
+
+### Fuwari：
 
 ::github{repo="saicaca/fuwari"}
 
-> ### Sources of images used in this site
-> - [Unsplash](https://unsplash.com/)
-> - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
-> - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)
+## 图片来源：
+
+> 背景：[#魅惑のふともも 无题 - 鸦居的插画 - pixiv](https://www.pixiv.net/artworks/122688417)
+>
+> 头像：[AI繪圖(aiart) 流螢 崩坏：星穹铁道 | HoYoLAB](https://www.hoyolab.com/article/34973913)
