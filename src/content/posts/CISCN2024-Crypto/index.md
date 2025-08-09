@@ -220,8 +220,6 @@ output = key.export_key(passphrase=passphrase).split(b'\n')
 
 <details>
     <summary><b>点击展开代码</b></summary>
-
-
 ```python
 from binascii import a2b_base64, unhexlify
 from Crypto.Hash import MD5
@@ -303,11 +301,7 @@ exp：
 
 <details>
     <summary><b>点击展开代码</b></summary>
-```python
-from tqdm import *
-from Crypto.Util.number import *
-from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP
+
 
 ```python
 from tqdm import *
