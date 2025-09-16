@@ -10,19 +10,37 @@ permissions:
   pages: write
   id-token: write
 
+concurrency:
+  group: pages
+  cancel-in-progress: true        # 重复推送时取消旧任务
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout your repository using git
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install, build, and upload your site
-        uses: withastro/action@v3
+      # 一次装好 Node + pnpm，自带缓存
+      - name: Setup Node & pnpm
+        uses: actions/setup-node@v4
         with:
-          # path: .                      # 可选：Astro 项目根目录
-          node-version: 20               # 可选：Node 版本
-          package-manager: pnpm   # ✅ 指定 pnpm 版本，解决“No pnpm version is specified”
+          node-version: 20
+          cache: pnpm               # 缓存 ~/.pnpm-store
+
+      # 装依赖（--prod 可选，纯静态站可不开）
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile --prefer-offline
+
+      # 构建（Vite 缓存目录默认 node_modules/.vite）
+      - name: Build
+        run: pnpm run build
+
+      # 上传 artifact（官方推荐新 action，速度更快）
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
 
   deploy:
     needs: build
