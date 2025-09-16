@@ -22,7 +22,7 @@ jobs:
         with:
           # path: .                      # 可选：Astro 项目根目录
           node-version: 20               # 可选：Node 版本
-          package-manager: pnpm@8.15.5+   # ✅ 指定 pnpm 版本，解决“No pnpm version is specified”
+          package-manager: pnpm          # ✅ 指定 pnpm 版本，解决“No pnpm version is specified”
 
   deploy:
     needs: build
