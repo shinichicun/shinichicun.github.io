@@ -11,7 +11,7 @@ tags:
 
 这次做出了前两道，后两道主要是复现一位✌的wp（*表示赛中未出的题）
 
-# Sign (in) the ca7s
+# sign (in) the ca7s
 
 ## 题目
 
@@ -638,8 +638,511 @@ flag3: flag{**redacted1**}
 
 <hr style="border: 0.5px solid #36add4;"/>
 
+# *sign one m0re
+
+## 题目
+
+```python
+from fastecdsa.curve import secp256k1
+from fastecdsa.point import Point
+from secrets import randbelow
+from hashlib import sha512
+import signal
+import os
+
+FLAG = os.environ.get("FLAG", "flag{**redacted**}")
+
+MAX_SESSIONS = 192
+
+p, q, G = secp256k1.p, secp256k1.q, secp256k1.G
+info = int.from_bytes(b"[N1CTF Junior 2025]", "big")
+z = Point(info, pow(info ** 3 + 7, (p + 1) // 4, p), secp256k1)
+
+class Signer:
+    def __init__(self):
+        self.x = randbelow(q)
+        self.y = self.x * G
+        self.sessions = {sid: (0, ) for sid in range(MAX_SESSIONS)}
+    
+    def get_public_key(self):
+        return self.y
+    
+    def commit(self, sid):
+        assert sid in range(MAX_SESSIONS), "Invalid session"
+        assert self.sessions[sid][0] == 0, "Invalid state"
+        u, s, d = [randbelow(q) for _ in range(3)]
+        a, b = u * G, s * G + d * z
+        self.sessions[sid] = (1, u, s, d)
+        return a, b
+    
+    def sign(self, sid, e):
+        assert sid in range(MAX_SESSIONS), "Invalid session"
+        assert self.sessions[sid][0] == 1, "Invalid state"
+        assert 1 < e < q, "Invalid query"
+        _, u, s, d = self.sessions[sid]
+        c = (e - d) % q
+        r = (u - c * self.x) % q
+        self.sessions[sid] = (2, )
+        return r, c, s, d
+
+class Verifier:
+    def __init__(self):
+        self.messages = set()
+    
+    def oracle(self, α, β, z, msg):
+        to_hash = "||".join(map(str, [α.x, α.y, β.x, β.y, z.x, z.y, msg]))
+        return int.from_bytes(sha512(to_hash.encode()).digest(), "big") % q
+    
+    def verify(self, pub, sig, msg):
+        assert all(1 < x < q for x in sig), "Invalid signature"
+        ρ, ω, σ, δ = sig
+        if (ω + δ) % q == self.oracle(ρ * G + ω * pub, σ * G + δ * z, z, msg):
+            self.messages.add(msg)
+            if len(self.messages) == MAX_SESSIONS + 1:
+                return FLAG
+            return "Good signature"
+        return "Bad signature"
+
+signal.alarm(300)
+signer = Signer()
+verifier = Verifier()
+
+while True:
+    cmd, *args = input("> ").split()
+    if cmd == "get_key":
+        y = signer.get_public_key()
+        print(f"y = ({y.x}, {y.y})")
+    elif cmd == "commit":
+        sid = int(args[0])
+        a, b = signer.commit(sid)
+        print(f"a = ({a.x}, {a.y})")
+        print(f"b = ({b.x}, {b.y})")
+    elif cmd == "sign":
+        sid, e = int(args[0]), int(args[1])
+        r, c, s, d = signer.sign(sid, e)
+        print(f"{r = }")
+        print(f"{c = }")
+        print(f"{s = }")
+        print(f"{d = }")
+    elif cmd == "verify":
+        sig, msg = tuple(map(int, args[:4])), args[4]
+        print(verifier.verify(signer.get_public_key(), sig, msg))
+
+```
+
+## 解题分析
+
+先分析一下题目：
+
+> 题目允许我们输入三种指令并输出对应的结果：
+>
+> **1，输入 "get_key"，会返回签名密钥y。**
+>
+> **2，输入 "commit sid"（$sid\in Z_{192}$），会返回sid对应的承诺值 $(a,\ b)$，其中 $a=u*G$、$b=s*G+d*z$；可以发192次。**
+>
+> **3，输入 "sign sid e"，会用sid的session来签名e（其中$e=H(\alpha,\beta,z,\text{msg})$，$z$为椭圆secp256k1上横坐标为info的点），得到签名值 $(r,\ c,\ s,\ d)$，其中 $c=(e-d)\ mod\ q$、$r=(u-c*x)\ mod\ q$；可以发192次**
+>
+> **4，输入 "verify r c s d msg"，会验证 $(r,\ c,\ s,\ d)$是否是msg的签名值；如果是，则返回 "Good signature"并储存到集合messages里，否则为 "Bad signature"；倘若messages里有193个值，则返回flag。**
+
+由此可见，我们的目标就是：**在能获取192个签名的情况下，伪造出message值不同的第193个签名**
+
+而这道题当时有给了提示（不过我没来得及保存），最后是指向一篇叫做[Dimensional eROSion: Improving the ROS Attack
+with Decomposition in Higher Bases](https://eprint.iacr.org/2025/306.pdf)的论文，相关攻击在5.2节（当然，论文里也有对应的攻击代码，但就是需要改改才能用）。
+
+但在讲攻击方法之前，我们先回看一下刚刚分析的第三步与第四步，因为每次签名与验签都是围绕着这个：
+$$
+\begin{align*}
+(c+d)\ mod\ n=e&=H(\alpha,\beta,z,\text{msg})\\
+&=H(ρ*G+ω*pub,σ*G+δ*z,z,msg)\\
+&=H(r*G+c*pub,s*G+d*z,z,msg)
+\end{align*}
+$$
+而如果我们关注一下$H(r*G+c*pub,s*G+d*z,z,msg)$会发现：
+$$
+\begin{align*}
+\alpha&=r*G+c*pub=(u-c*x)G+(c*x)g=u*G=a\\
+\beta&=s*G+d*z=b
+\end{align*}
+$$
+也就是说：$e=(c+d)\ mod\ n=H(a,b,z,msg)$。
+
+### attacking m-BZ
+
+（因为我自己目前也没完全看懂整篇论文，所以就稍微写了下攻击流程，有空就再写详细点）
+
+流程如下：
+
+> 已知：$z$
+>
+> 1. **收集 commit**  
+>    对每个会话 $i=0\dots191$ 做commit，拿到 $(a_i,b_i)$。
+>
+> 2. **预计算挑战值**  
+>
+>    根据**Theorem 2**，计算$A=\{A_i|i\in[0,6]\}$和$B=\{B_i|i\in[0,6]\}$：![image-20250924002024803](assets/image-20250924002024803.png)
+>
+>    遍历集合$B$，每次遍历里：
+>
+>    ​		选 $B_i$ 条消息 $m_{i,b}$，计算 $$e_{i,b}=H(a_i,b_i,z,m_{i,b})\bmod n$$，然后以 $e_{i,0}$ 为基准，构造差值向量 $q_i=[e_{i,1}-e_{i,0},\ e_{i,2}-e_{i,0},\ \dots]$
+>
+> 3. **Lattice + Babai**  
+>    建矩阵 $M_i=\begin{bmatrix}q_i\\ nI\end{bmatrix}$，解“最近向量”（SVP）得 $\mu_i$，$\mu_i$ 满足 $$\mu_i\cdot q_i\approx[1,2,\dots]$$
+>
+> 4. **分解常数**  
+>    目标：$\sum_{i=0}^{191} \text{pows}[i]\cdot\mu_i\cdot e_{i,\text{digits}[i]}\equiv 1\bmod n$  
+>    用 `multibase(1,pows)` 逐位分解，输出 `digits[i]`——第 $i$ 维应选的挑战值索引。
+>
+> 5. **一次重放签名**  
+>    按 `digits[i]` 重发挑战值 $e_{i,\text{digits}[i]}$，拿到 $(r_i,c_i,s_i,d_i)$ 后立即发送验证，累计 192 次。
+>
+> 6. **线性组合伪造**  
+>    伪造以下参数：   
+>    $$
+>    \begin{aligned}
+>    K_i&=\text{extra\_alpha}\cdot\text{pows}[i]\cdot\mu_i\bmod n\\
+>    r_f&=\sum K_i r_i\bmod n\\[2pt]
+>    c_f&=\sum K_i c_i\bmod n\\[2pt]
+>    s_f&=\sum K_i s_i\bmod n\\[2pt]
+>    d_f&=\sum K_i d_i\bmod n
+>    \end{aligned}
+>    $$
+>    这些参数满足：
+>    $$
+>    c_f+d_f=\sum K_i e_{i,\text{digits}[i]}=H(r_f*G+c_f*pub,s_f*G+d_f*z,z,\text{msg}_{\text{forge}})
+>    $$
+>    也因此，我们便有了193个不同msg的签名。
+>
+> 7. **触发 flag**  
+>    把 $(r_f,c_f,s_f,d_f,\text{msg}_{\text{forge}})$ 发给靶机进行 verify，verify通过时消息计数变为 193，于是直接返回了 flag。
+
+## exp
+
+这里贴一下某个✌的exp：
+
+```python
+#!/usr/bin/env python3
+"""
+One-shot ROS attack for 'sign one m0re' challenge
+- Collect 192 commits (a_i, b_i)
+- For each i, precompute multiple candidate e_{i,j} = H(a_i, b_i, z, m_{i,j}) by varying messages
+- Build per-dimension lattices and solve via Babai to get mu_i
+- Decompose target to choose j_i per dimension so that sum K_i * e_{i,j_i} == e_forge
+- Query sign once per session with e_{i,j_i}, collect (r_i, c_i, s_i, d_i)
+- Forge (rho, omega, sigma, delta) = sum K_i * (r_i, c_i, s_i, d_i)
+- Verify forged signature on forged message to get flag
+
+Notes:
+- All modular arithmetic is done mod n (curve order)
+- EC point ops use Sage on secp256k1 over GF(p)
+- Requires running with `sage -python one_shot_ros.py`
+"""
+
+from pwn import *
+import hashlib
+import os
+from sage.all import *
+from sage.modules.free_module_integer import IntegerLattice
+
+# secp256k1 params
+FIELD_P = Integer(0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffefffffc2f)  # field prime
+ORDER_N = Integer(0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141)  # group order
+Fp = GF(FIELD_P)
+Zn = GF(ORDER_N)
+E = EllipticCurve(Fp, [0, 7])
+G = E(Integer(0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798),
+      Integer(0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8))
+
+MAX_SESSIONS = 192
+
+# Fixed z from challenge
+INFO = int.from_bytes(b"[N1CTF Junior 2025]", "big")
+z_point = E(Integer(INFO), Integer(pow(INFO ** 3 + 7, (FIELD_P + 1) // 4, FIELD_P)))
+
+# Oracle identical to challenge (mod n)
+def oracle(alpha_pt, beta_pt, z_pt, msg_str):
+    to_hash = "||".join(map(str, [int(alpha_pt[0]), int(alpha_pt[1]), int(beta_pt[0]), int(beta_pt[1]), int(z_pt[0]), int(z_pt[1]), msg_str]))
+    return Integer(int.from_bytes(hashlib.sha512(to_hash.encode()).digest(), "big")) % ORDER_N
+
+# Utilities
+
+def inner_product(coeffs, vals):
+    return sum(c * v for c, v in zip(coeffs, vals))
+
+
+def scale_to_Zn(vec):
+    # Convert a vector of rationals in Zn to a single Zn element (first entry) after solving
+    assert all(gcd(ORDER_N, el.denominator()) == 1 for el in vec)
+    return vector(Zn, [Zn(el.numerator()) / Zn(el.denominator()) for el in vec])
+
+
+def pows_gen(n=7, group_bit_len=256, extra_digits=0):
+    # Same as provided Sage, but using ORDER_N
+    max_number = Integer(2) ** group_bit_len
+    assert n >= 2
+    factored = []
+    k = n - 1
+    while k >= 1:
+        B = QQ(1) / QQ(500)  # practical tweak
+        max_k = ceil(log(max_number, k + 1))
+        if k == 1:
+            e_k = 0
+        else:
+            e_k = ceil(log(B * log(ORDER_N, k + 1) * ORDER_N ** ((k - 1) / k), k + 1)) + extra_digits
+        factored = [(k + 1, i) for i in range(e_k, max_k)] + factored
+        max_number = (k + 1) ** e_k
+        k -= 1
+    return factored  # list of (base, exponent)
+
+
+def multibase(num_int, pows):
+    # pows is list of integers (bases already exponentiated)
+    temp = Integer(num_int)
+    digits = []
+    for base in pows[::-1]:
+        digits = [temp // base] + digits
+        temp = temp % base
+    assert inner_product(digits, pows) == num_int
+    return digits
+
+
+def choose_pows_up_to(max_sessions=192, start_basis=7, max_basis_cap=12):
+    # Try to get len(pows) as close to max_sessions without exceeding
+    best = None
+    for mb in range(start_basis, max_basis_cap + 1):
+        factored = pows_gen(n=mb + 1, group_bit_len=ceil(log(ORDER_N, 2)), extra_digits=0)
+        pows = [Integer(b) ** Integer(e) for (b, e) in factored]
+        if best is None or (len(pows) <= max_sessions and len(pows) > len(best[0])):
+            best = (pows, [b for (b, e) in factored])
+        if len(pows) == max_sessions:
+            break
+    # If still shorter, pad with base=2 powers of 1 to reach max_sessions (benign extra dims)
+    pows, bases = best
+    if len(pows) < max_sessions:
+        pad = [Integer(2)] * (max_sessions - len(pows))
+        pows = pows + pad
+        bases = bases + [2] * len(pad)
+    if len(pows) > max_sessions:
+        pows = pows[:max_sessions]
+        bases = bases[:max_sessions]
+    return pows, bases
+
+
+def main():
+    context = contextlib = None  # avoid lint
+    print("[*] One-shot ROS attack starting...")
+
+    # Connect to challenge
+    io = process(['python3', 'sign one m0re.py'])
+
+    # Get public key
+    io.sendline(b"get_key")
+    line = io.recvline().decode().strip()
+    y_coords = line.split("y = (")[1].rstrip(")")
+    yx, yy = map(int, y_coords.split(", "))
+    Y = E(Integer(yx), Integer(yy))
+    print(f"[*] Public key Y.x={yx}")
+
+    # Choose bases and pows
+    pows, pows_bases = choose_pows_up_to(MAX_SESSIONS, start_basis=7, max_basis_cap=12)
+    ell = len(pows)
+    assert ell == MAX_SESSIONS, f"ell={ell} != {MAX_SESSIONS}, adjust choose_pows_up_to"
+    print(f"[*] ell = {ell} dimensions")
+
+    # Collect commits (a_i, b_i)
+    A_pts = []
+    B_pts = []
+    a_coords_list = []
+    b_coords_list = []
+
+    for sid in range(ell):
+        io.sendline(f"commit {sid}".encode())
+        la = io.recvline().decode().strip()
+        lb = io.recvline().decode().strip()
+        ax_s = la.split("a = (")[1].rstrip(")")
+        bx_s = lb.split("b = (")[1].rstrip(")")
+        ax, ay = map(int, ax_s.split(", "))
+        bx, by = map(int, bx_s.split(", "))
+        a_pt = E(Integer(ax), Integer(ay))
+        b_pt = E(Integer(bx), Integer(by))
+        A_pts.append(a_pt)
+        B_pts.append(b_pt)
+        a_coords_list.append((ax, ay))
+        b_coords_list.append((bx, by))
+        if sid % 32 == 0:
+            print(f"[*] commit {sid}/{ell}")
+
+    # Generate candidate messages and e-values per dimension
+    # For each i: generate pows_bases[i] candidates indexed 0..B_i-1
+    msgs = []
+    e_values = []  # list of lists of integers mod n
+
+    for i in range(ell):
+        Bi = int(pows_bases[i])
+        mi_list = []
+        ei_list = []
+        for b in range(Bi):
+            m = f"m{i}_{b}_{os.urandom(8).hex()}"
+            eib = oracle(A_pts[i], B_pts[i], z_point, m)
+            mi_list.append(m)
+            ei_list.append(int(eib))
+        msgs.append(mi_list)
+        e_values.append(ei_list)
+        if i % 32 == 0:
+            print(f"[*] candidates {i}/{ell}")
+
+    # Build qi and lattices M_i
+    qi = []  # differences list for each i: [e_i_b - e_i_0] for b>=1
+    M = []
+
+    for i in range(ell):
+        base_e0 = Integer(e_values[i][0])
+        diffs = [Integer((Integer(e_values[i][b]) - base_e0) % ORDER_N) for b in range(1, int(pows_bases[i]))]
+        qi.append(diffs)
+        if len(diffs) > 0:
+            top = Matrix(ZZ, [diffs])  # 1 x (Bi-1)
+            bottom = ORDER_N * matrix.identity(ZZ, len(diffs))  # (Bi-1) x (Bi-1)
+            Mi = block_matrix([[top], [bottom]])
+        else:
+            Mi = matrix(ZZ, [[int(ORDER_N)]])
+        M.append(Mi)
+
+    # Solve CVP with Babai per dimension to obtain mu_i in Zn
+    mu = []
+    for i in range(ell):
+        Bi = int(pows_bases[i])
+        if Bi > 1:
+            tgt = vector(ZZ, [int(j * Integer(pows[i])) for j in range(1, Bi)])
+            lattice = IntegerLattice(M[i])
+            closest = vector(ZZ, lattice.babai(tgt))
+            sol = M[i].solve_left(closest)  # rational vector (length 1)
+            mu_i = (Zn(1) / Zn(int(pows[i]))) * scale_to_Zn(sol)[0]
+            mu.append(mu_i)
+        else:
+            mu.append(Zn.random_element())
+    print("[*] mu computed")
+
+    # Forge target alpha,beta points (base sums)
+    # alpha_base = sum pows[i]*mu[i] * A_pts[i]
+    # beta_base  = sum pows[i]*mu[i] * B_pts[i]
+    alpha_base = None
+    beta_base = None
+    for i in range(ell):
+        coeff = int((Zn(int(pows[i])) * mu[i]).lift())  # 0..n-1
+        if coeff % int(ORDER_N) == 0:
+            continue
+        term_a = Integer(coeff) * A_pts[i]
+        term_b = Integer(coeff) * B_pts[i]
+        alpha_base = term_a if alpha_base is None else alpha_base + term_a
+        beta_base = term_b if beta_base is None else beta_base + term_b
+    if alpha_base is None:
+        print("[!] alpha_base is None, abort")
+        io.close(); return
+
+    # Try decomposition attempts
+    attempts = 0
+    success = False
+
+    while attempts < 80 and not success:
+        attempts += 1
+        extra_alpha = Zn.random_element()
+        if int(extra_alpha) == 0:
+            continue
+        inv_extra = Zn(int(pow(int(extra_alpha), -1, int(ORDER_N))))
+
+        alpha_forge = int(extra_alpha) * alpha_base
+        beta_forge = int(extra_alpha) * beta_base
+        msg_forge = f"forge_msg_{os.urandom(6).hex()}"
+        c_forge = Integer(oracle(alpha_forge, beta_forge, z_point, msg_forge))  # in [0,n)
+
+        # NUM = extra_alpha^{-1} * c_forge + sum pows*mu*(-e_i0) mod n
+        NUM = (inv_extra * Zn(int(c_forge)))
+        for i in range(ell):
+            NUM += (Zn(0) - (Zn(int(pows[i])) * mu[i] * Zn(int(e_values[i][0]))))
+        NUM_int = Integer(int(NUM.lift()))  # 0..n-1
+
+        # greedy digit by digit
+        digits = [0] * ell
+        NUM_cur = NUM_int
+        ok = True
+        for i in range(ell - 1, -1, -1):
+            try:
+                cur_digits = multibase(NUM_cur, [Integer(x) for x in pows])
+            except AssertionError:
+                ok = False
+                break
+            new_digit = int(cur_digits[i])
+            digits[i] = new_digit
+            if new_digit >= int(pows_bases[i]):
+                ok = False
+                break
+            if new_digit != 0:
+                # NUM_cur -= pows[i] * mu[i] * qi[i][new_digit-1] (mod n) as integer representative
+                delta = (Zn(int(pows[i])) * mu[i] * Zn(int(qi[i][new_digit - 1])))
+                NUM_cur = Integer((NUM_cur - int(delta.lift())) % int(ORDER_N))
+            if NUM_cur < 0:
+                ok = False
+                break
+            if NUM_cur == 0:
+                # can break early only if remaining higher digits are 0
+                pass
+        if ok and NUM_cur == 0:
+            success = True
+            print(f"[+] Decomposition success in {attempts} attempts")
+            break
+        if attempts % 10 == 0:
+            print(f"[*] attempt {attempts} failed")
+
+    if not success:
+        print("[!] Decomposition failed. Consider rerunning.")
+        io.close(); return
+
+    # With digits selected, we now sign once per session using e_i = e_values[i][digits[i]]
+    # and immediately verify to accumulate 192 messages in the verifier
+    signed = []  # tuples (r,c,s,d,msg)
+    for i in range(ell):
+        e_sel = int(e_values[i][digits[i]])
+        msg_i = msgs[i][digits[i]]
+        io.sendline(f"sign {i} {e_sel}".encode())
+        r_line = io.recvline().decode().strip(); r = int(r_line.split("r = ")[1])
+        c_line = io.recvline().decode().strip(); c = int(c_line.split("c = ")[1])
+        s_line = io.recvline().decode().strip(); s = int(s_line.split("s = ")[1])
+        d_line = io.recvline().decode().strip(); d = int(d_line.split("d = ")[1])
+        signed.append((r, c, s, d, msg_i))
+        # verify this legit signature to populate set
+        io.sendline(f"verify {r} {c} {s} {d} {msg_i}".encode())
+        vr = io.recvline().decode().strip()
+        if "Good signature" not in vr and "flag{" not in vr:
+            print(f"[!] Legit signature verify failed for session {i}: {vr}")
+            io.close(); return
+        if i % 32 == 0:
+            print(f"[*] verified legit {i}/{ell}")
+
+    # Compute forged signature as linear combination with K_i = extra_alpha * pows[i] * mu[i]
+    rho_f = 0; omega_f = 0; sigma_f = 0; delta_f = 0
+    for i in range(ell):
+        Ki = int((extra_alpha * Zn(int(pows[i])) * mu[i]).lift()) % int(ORDER_N)
+        r, c, s, d, _ = signed[i]
+        rho_f = (rho_f + Ki * r) % int(ORDER_N)
+        omega_f = (omega_f + Ki * c) % int(ORDER_N)
+        sigma_f = (sigma_f + Ki * s) % int(ORDER_N)
+        delta_f = (delta_f + Ki * d) % int(ORDER_N)
+
+    # Final verify forged signature to trigger the flag
+    io.sendline(f"verify {rho_f} {omega_f} {sigma_f} {delta_f} {msg_forge}".encode())
+    res = io.recvline().decode().strip()
+    print(res)
+
+    io.close()
+
+if __name__ == "__main__":
+    main()
+
+```
+
+
+
 # 后续
 
-因为是今天下午才开始写hhh，而且写得有点复杂，所以还没来得及看后面那两道，吃完饭再接着更新（确信）
+还差一题，这周就一定更新！（确信！）
 
 ![image-20250915190050101](assets/image-20250915190050101.png)
