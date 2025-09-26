@@ -2,7 +2,7 @@
 title: "Arch下的Sage安装"
 description: '记录一下'
 pubDate: "Aug 29 2024"
-image: /image/image.png
+image: /image/image3.jpg
 categories:
   - Arch
 tags:

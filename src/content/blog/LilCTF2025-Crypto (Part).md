@@ -2,7 +2,7 @@
 title: "LilCTF2025-Crypto (Part)"
 pubDate: "Aug 19 2025"
 description: '这次稍微去看了下密码, 有两道算是我做的时候感觉比较吃力或是看不出来的, 故复现一下'
-image: /image/image.png
+image: /image/image5.jpg
 categories:
   - CTF
 tags:

@@ -2,7 +2,7 @@
 title: SICTF2024-Crypto
 pubDate: 2024-03-16
 description: '记录一下'
-image: /image/image.png
+image: /image/image1.jpg
 categories:
   - CTF
 tags:

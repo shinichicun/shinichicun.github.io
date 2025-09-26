@@ -2,7 +2,7 @@
 title: "N1junior2025-Crypto"
 pubDate: "Sept 15 2025"
 description: '记录一下'
-image: /image/image.png
+image: /image/image2.jpg
 categories:
   - CTF
 tags:

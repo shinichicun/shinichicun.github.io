@@ -2,7 +2,7 @@
 title: "CINTA-Exercise"
 description: '记录一下'
 pubDate: "Sept 04 2025"
-image: /image/image.png
+image: /image/image1.jpg
 categories:
   - Number Theory
 tags:

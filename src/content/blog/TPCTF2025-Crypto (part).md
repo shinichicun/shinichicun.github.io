@@ -2,7 +2,7 @@
 title: TPCTF2025-Crypto (part)
 pubDate: 2025-03-10
 description: '就看了MT, 但没打出来, 所以按别的师傅的想法复现了下'
-image: /image/image.png
+image: /image/image4.jpg
 categories:
   - CTF
 tags:

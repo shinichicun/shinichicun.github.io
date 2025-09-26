@@ -2,7 +2,7 @@
 title: "DASCTF×HDCTF2024-Crypto"
 pubDate: "Jun 03 2024"
 description: '出了这次DAS周赛的题, 记录一下'
-image: /image/image.png
+image: /image/image2.jpg
 categories:
   - CTF
 tags:

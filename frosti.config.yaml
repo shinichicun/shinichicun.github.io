@@ -81,8 +81,8 @@ user:
         title: BiliBili
         svg: "ri:bilibili-line"
       - href: "https://qm.qq.com/q/pVfqR9JxZI"
-        ariaLabel: Tencent QQ
-        title: Tencent QQ
+        ariaLabel: QQ
+        title: QQ
         svg: "ri:qq-line"
   footer:
     social:
@@ -99,6 +99,6 @@ user:
         title: BiliBili
         svg: "ri:bilibili-line"
       - href: "https://qm.qq.com/q/pVfqR9JxZI"
-        ariaLabel: Tencent QQ
-        title: Tencent QQ
+        ariaLabel: QQ
+        title: QQ
         svg: "ri:qq-line"
