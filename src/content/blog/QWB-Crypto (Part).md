@@ -9,7 +9,7 @@ tags:
   - Crypto
 ---
 
-”*“ 表示未做出的题，“~” 表示赛后复现出的题，“!” 表示赛中做出的题
+**”*“ 表示未做出的题，“~” 表示赛后复现出的题，“!” 表示赛中做出的题**
 
 # 1，check-little (!)
 
@@ -70,7 +70,7 @@ aes = AES.new(key = long_to_bytes(key)[:16], iv = iv, mode = AES.MODE_CBC)
 aes.decrypt(bytes.fromhex(ciphertext))
 ```
 
----
+<hr style="border: 0.5px solid #36add4;"/>
 
 # 2，ezran (!)
 
@@ -178,7 +178,7 @@ if(1):
 # flag{7hE_numbEr_0f_biT5_i5_Enou9h_@L5o_ThE_r4nk_must_3n0ugh}
 ```
 
----
+<hr style="border: 0.5px solid #36add4;"/>
 
 # 3，sk (~)
 
@@ -492,7 +492,7 @@ for root in roots:
         print(sh.recvline().strip().decode())
 ```
 
----
+<hr style="border: 0.5px solid #36add4;"/>
 
 # 4，Blurred (~)
 
@@ -668,7 +668,7 @@ RNG = mt19937(bits, 0)
 RNG = mt19937(bits, 1)
 ```
 
----
+<hr style="border: 0.5px solid #36add4;"/>
 
 # 5，theorezhnp (*)
 
@@ -769,6 +769,6 @@ else:
 
 我只能说两个字：神奇！
 
-![image-20251020174204790](assets/image-20251020174204790.png)
+![image-20251020174204790](assets/image-20251020174204790.jpg)
 
 不过最近也没空，有空再试试看吧。
